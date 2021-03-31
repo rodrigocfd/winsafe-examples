@@ -22,6 +22,10 @@ The `.res` file is linked into the final `.exe` by the `build.rs`, which is a [C
 
 ![Example 02](02_combo_and_radios/screen.gif)
 
+3. [Dialog resources](03_dialog_resources/)
+
+![Example 03](03_dialog_resources/screen.gif)
+
 ## License
 
 Licensed under [MIT license](https://opensource.org/licenses/MIT), see [LICENSE.md](LICENSE.md) for details.

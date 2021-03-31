@@ -61,31 +61,31 @@ impl MyWindow {
 
 	fn events(&self) {
 		self.wnd.on().wm_create({ // happens once, right after the window is created
-			let me = self.clone();
+			let self2 = self.clone();
 			move |_| {
-				me.cmb_cities.items().add(&["Paris", "Madrid", "Lisbon", "Rome"])
+				self2.cmb_cities.items().add(&["Paris", "Madrid", "Lisbon", "Rome"])
 					.unwrap();
 
-				me.rad_seas[1].set_check(true); // second radio initially selected
+				self2.rad_seas[1].set_check(true); // second radio initially selected
 
 				0
 			}
 		});
 
 		self.cmb_cities.on().cbn_sel_change({ // combo item is selected
-			let me = self.clone();
+			let self2 = self.clone();
 			move || {
-				let the_city = me.cmb_cities.items().selected_text().unwrap();
-				me.wnd.hwnd().SetWindowText(&the_city).unwrap()
+				let the_city = self2.cmb_cities.items().selected_text().unwrap();
+				self2.wnd.hwnd().SetWindowText(&the_city).unwrap()
 			}
 		});
 
 		self.rad_seas.on().bn_clicked({ // radio item is selected
-			let me = self.clone();
+			let self2 = self.clone();
 			move || {
-				let selected_radio = me.rad_seas.checked().unwrap();
+				let selected_radio = self2.rad_seas.checked().unwrap();
 				let the_sea = selected_radio.hwnd().GetWindowTextStr().unwrap();
-				me.wnd.hwnd().SetWindowText(&the_sea).unwrap();
+				self2.wnd.hwnd().SetWindowText(&the_sea).unwrap();
 			}
 		});
 	}
