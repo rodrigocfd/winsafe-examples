@@ -14,7 +14,7 @@ impl MyWindow {
 		let wnd = gui::WindowMain::new( // instantiate the window manager
 			gui::WindowMainOpts {
 				title: "My window title".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(),
+				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(), // load icon from resource ID 101
 				size: SIZE::new(300, 150),
 				..Default::default() // leave all other options as default
 			},
