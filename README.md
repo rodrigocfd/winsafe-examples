@@ -20,6 +20,7 @@ Note that the order can change with new examples being added.
 | 02 [Combo and radios](02_combo_and_radios/) | ![Example 02](02_combo_and_radios/screen.gif) |
 | 03 [Dialog resources](03_dialog_resources/) | ![Example 03](03_dialog_resources/screen.gif) |
 | 04 [Custom control](04_custom_control/) | ![Example 04](04_custom_control/screen.gif) |
+| 05 [Resizable layout](05_resizable_layout/) | ![Example 05](05_resizable_layout/screen.gif) |
 
 ## License
 
