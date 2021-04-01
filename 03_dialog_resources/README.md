@@ -19,3 +19,9 @@ To generate the final executable:
 ```
 cargo build --release
 ```
+
+## Resource editor
+
+Out of curiosity, this is the `resources/example03.res` file being edited in Visual Studio 2019 resource editor:
+
+![Visual Studio 2019 resource editor](vs2019.gif)
