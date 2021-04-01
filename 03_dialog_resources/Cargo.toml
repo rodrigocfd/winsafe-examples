@@ -9,5 +9,5 @@ lto = true
 codegen-units = 1
 #panic = "abort"
 
-[dependencies.winsafe]
-path = "../../winsafe"
+[dependencies]
+winsafe = "0.0.2"

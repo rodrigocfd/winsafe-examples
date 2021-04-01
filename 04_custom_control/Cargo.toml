@@ -8,5 +8,5 @@ edition = "2018"
 lto = true
 codegen-units = 1
 
-[dependencies.winsafe]
-path = "../../winsafe"
+[dependencies]
+winsafe = "0.0.2"

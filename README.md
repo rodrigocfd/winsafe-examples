@@ -2,7 +2,7 @@
 
 This repo contains several examples of native Win32 applications written in [Rust](https://www.rust-lang.org) with [WinSafe](https://github.com/rodrigocfd/winsafe). All examples follow the same program structure, which is the recommended way to build a WinSafe application.
 
-Each directory is a full application, with is own `Cargo.toml`. Note that WinSafe dependency is set to a sibling local directory for testing purposes, but you can change it to the normal [crates.io](https://crates.io/crates/winsafe) if you want to.
+Each directory is a full application, with is own `Cargo.toml`.
 
 ## Resources
 
