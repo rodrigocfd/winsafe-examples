@@ -4,6 +4,8 @@ use std::rc::Rc;
 use winsafe::co;
 use winsafe::gui;
 
+use crate::ids;
+
 #[derive(Clone)]
 pub struct MyModal {
 	wnd:          gui::WindowModal,
@@ -21,14 +23,14 @@ pub struct MyModal {
 
 impl MyModal {
 	pub fn new(parent: &dyn gui::Parent, input_text: &str) -> MyModal {
-		let wnd = gui::WindowModal::new_dlg(parent, 2000);
+		let wnd = gui::WindowModal::new_dlg(parent, ids::DLG_MODAL);
 
-		let lbl_incoming = gui::Label::new_dlg(&wnd, 2001);
-		let txt_incoming = gui::Edit::new_dlg(&wnd, 2002);
-		let lbl_return = gui::Label::new_dlg(&wnd, 2003);
-		let txt_return = gui::Edit::new_dlg(&wnd, 2004);
-		let btn_ok = gui::Button::new_dlg(&wnd, 2005);
-		let btn_cancel = gui::Button::new_dlg(&wnd, 2006);
+		let lbl_incoming = gui::Label::new_dlg(&wnd, ids::LBL_INCOMING);
+		let txt_incoming = gui::Edit::new_dlg(&wnd, ids::TXT_INCOMING);
+		let lbl_return = gui::Label::new_dlg(&wnd, ids::LBL_RETURN);
+		let txt_return = gui::Edit::new_dlg(&wnd, ids::TXT_RETURN);
+		let btn_ok = gui::Button::new_dlg(&wnd, ids::BTN_OK);
+		let btn_cancel = gui::Button::new_dlg(&wnd, ids::BTN_CANCEL);
 
 		let new_self = Self {
 			wnd,

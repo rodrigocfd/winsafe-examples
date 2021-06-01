@@ -41,7 +41,7 @@ impl MyWindow {
 	fn events(&mut self) {
 		self.click_board.on_click({ // click event of our custom control
 			let wnd = self.wnd.clone();
-			move |num_points| {
+			move |num_points: usize| {
 				wnd.hwnd().SetWindowText(
 					&format!("Points: {}", num_points)).unwrap();
 			}

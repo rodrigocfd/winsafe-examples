@@ -52,7 +52,18 @@ impl MyWindow {
 			},
 		);
 
-		let resizer = gui::Resizer::new(&wnd);
+		let resizer = gui::Resizer::new(&wnd, &[ // responsible for automatically resizing the controls
+
+			// Horizontally/vertically: resize with parent window.
+			(gui::Resz::Resize, gui::Resz::Resize, &[&lst]),
+
+			// Horizontally: resize with parent window.
+			// Vertically: move the control anchored at parent window bottom.
+			(gui::Resz::Resize, gui::Resz::Repos, &[&txt]),
+
+			// Horizontally/vertically: move the control anchored at parent window right/bottom.
+			(gui::Resz::Repos, gui::Resz::Repos, &[&btn]),
+		]);
 
 		let new_self = Self { wnd, lst, txt, btn, resizer };
 		new_self.events();
@@ -64,26 +75,6 @@ impl MyWindow {
 	}
 
 	fn events(&self) {
-		self.wnd.on().wm_create({
-			let self2 = self.clone();
-			move |_| {
 
-				// Setup the resizer control, passing the horizontal/vertical
-				// behavior of each control.
-				self2.resizer
-
-					// Horizontally/vertically: resize with parent window.
-					.add(gui::Resz::Resize, gui::Resz::Resize, &[&self2.lst])
-
-					// Horizontally: resize with parent window.
-					// Vertically: move the control anchored at parent window bottom.
-					.add(gui::Resz::Resize, gui::Resz::Repos, &[&self2.txt])
-
-					// Horizontally/vertically: move the control anchored at parent window right/bottom.
-					.add(gui::Resz::Repos, gui::Resz::Repos, &[&self2.btn]);
-
-				0
-			}
-		});
 	}
 }

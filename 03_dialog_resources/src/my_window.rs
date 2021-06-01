@@ -1,6 +1,7 @@
 use winsafe::gui;
 use winsafe::WinResult;
 
+use crate::ids;
 use crate::my_modal::MyModal;
 
 #[derive(Clone)]
@@ -13,13 +14,11 @@ pub struct MyWindow {
 
 impl MyWindow {
 	pub fn new() -> MyWindow {
-		// In the resource file, we defined the dialog ID as 1000,
-		// and the icon ID as 101.
-		let wnd = gui::WindowMain::new_dlg(1000, Some(101), None);
+		let wnd = gui::WindowMain::new_dlg(ids::DLG_MAIN, Some(ids::ICO_MAIN), None);
 
-		let lbl_input = gui::Label::new_dlg(&wnd, 1001); // we defined the label ID as 1001
-		let txt_input = gui::Edit::new_dlg(&wnd, 1002);
-		let btn_show = gui::Button::new_dlg(&wnd, 1003);
+		let lbl_input = gui::Label::new_dlg(&wnd, ids::LBL_INPUT);
+		let txt_input = gui::Edit::new_dlg(&wnd, ids::TXT_INPUT);
+		let btn_show = gui::Button::new_dlg(&wnd, ids::BTN_SHOW);
 
 		let new_self = Self { wnd, lbl_input, txt_input, btn_show };
 		new_self.events();
@@ -31,6 +30,14 @@ impl MyWindow {
 	}
 
 	fn events(&self) {
+		self.wnd.on().wm_init_dialog({
+			let self2 = self.clone();
+			move |_| {
+				self2.lbl_input.resize_to_text().unwrap();
+				true
+			}
+		});
+
 		self.btn_show.on().bn_clicked({
 			let self2 = self.clone();
 			move || {

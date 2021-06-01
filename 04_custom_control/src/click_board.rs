@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use winsafe::{co, gui};
+use winsafe::{co, gui, msg};
 use winsafe::{HINSTANCE, IdIdcStr, PAINTSTRUCT, POINT, SIZE};
 
 #[derive(Clone)]
@@ -13,12 +13,10 @@ pub struct ClickBoard {
 
 impl ClickBoard {
 	pub fn new(parent: &dyn gui::Parent, position: POINT, size: SIZE) -> ClickBoard {
-		let hinstance_oem = HINSTANCE::oem(); // used to load built-in system resources
-
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
-				class_cursor: hinstance_oem.LoadCursor(IdIdcStr::Idc(co::IDC::CROSS)).unwrap(),
+				class_cursor: HINSTANCE::NULL.LoadCursor(IdIdcStr::Idc(co::IDC::CROSS)).unwrap(),
 				position,
 				size,
 				ex_style: gui::WindowControlOpts::default().ex_style | co::WS_EX::CLIENTEDGE,
@@ -43,7 +41,7 @@ impl ClickBoard {
 	fn events(&self) {
 		self.wnd.on().wm_l_button_down({
 			let self2 = self.clone();
-			move |p| {
+			move |p: msg::wm::LButtonDown| {
 				let mut points = self2.points.borrow_mut();
 				points.push(p.coords);
 				self2.wnd.hwnd().InvalidateRect(None, true).unwrap(); // redraw now
