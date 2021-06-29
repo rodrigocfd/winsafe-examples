@@ -1,6 +1,6 @@
 [package]
 name = "custom-control"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Rodrigo Cesar de Freitas Dias <rcesar@gmail.com>"]
 edition = "2018"
 

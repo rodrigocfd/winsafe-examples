@@ -46,7 +46,7 @@ impl MyWindow {
 		let btn = gui::Button::new(
 			&wnd,
 			gui::ButtonOpts {
-				text: "&Click".to_owned(),
+				text: "&Button".to_owned(),
 				position: POINT::new(200, 120),
 				..Default::default()
 			},
