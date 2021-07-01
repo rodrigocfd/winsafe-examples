@@ -65,7 +65,7 @@ impl MyModal {
 			let self2 = self.clone();
 			move || {
 				// Save the text typed by the user.
-				*self2.return_val.borrow_mut() = Some(self2.txt_return.text().unwrap());
+				*self2.return_val.borrow_mut() = Some(self2.txt_return.text_str().unwrap());
 				self2.wnd.hwnd().EndDialog(0).unwrap();
 			}
 		});

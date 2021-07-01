@@ -1,5 +1,5 @@
 use winsafe::gui;
-use winsafe::{HINSTANCE, IdIdiStr, POINT, SIZE, WinResult};
+use winsafe::{HINSTANCE, IdIdi, POINT, SIZE, WinResult};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -15,7 +15,7 @@ impl MyWindow {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "Combo and radios".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(),
+				class_icon: hinstance.LoadIcon(IdIdi::Id(101)).unwrap(),
 				size: SIZE::new(300, 150),
 				..Default::default()
 			},
