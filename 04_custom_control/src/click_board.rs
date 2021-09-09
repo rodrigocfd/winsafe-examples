@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use winsafe::{co, gui, msg};
-use winsafe::{HINSTANCE, IdIdc, PAINTSTRUCT, POINT, SIZE};
+use winsafe::{HINSTANCE, IdIdcStr, PAINTSTRUCT, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct ClickBoard {
@@ -16,7 +16,7 @@ impl ClickBoard {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
-				class_cursor: HINSTANCE::NULL.LoadCursor(IdIdc::Idc(co::IDC::CROSS)).unwrap(),
+				class_cursor: HINSTANCE::NULL.LoadCursor(IdIdcStr::Idc(co::IDC::CROSS)).unwrap(),
 				position,
 				size,
 				ex_style: gui::WindowControlOpts::default().ex_style | co::WS_EX::CLIENTEDGE,

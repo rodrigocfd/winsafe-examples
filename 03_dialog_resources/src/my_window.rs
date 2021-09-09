@@ -41,7 +41,7 @@ impl MyWindow {
 		self.btn_show.on().bn_clicked({
 			let self2 = self.clone();
 			move || {
-				let input_text = self2.txt_input.text_str().unwrap();
+				let input_text = self2.txt_input.text().unwrap();
 
 				let my_modal = MyModal::new(&self2.wnd, &input_text);
 				let returned_text = my_modal.show();

@@ -1,5 +1,5 @@
 use winsafe::gui;
-use winsafe::{HINSTANCE, IdIdi, POINT, SIZE, WinResult};
+use winsafe::{HINSTANCE, IdIdiStr, POINT, SIZE, WinResult};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -14,7 +14,7 @@ impl MyWindow {
 		let wnd = gui::WindowMain::new( // instantiate the window manager
 			gui::WindowMainOpts {
 				title: "My window title".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdi::Id(101)).unwrap(), // load icon from resource ID 101
+				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(), // load icon from resource ID 101
 				size: SIZE::new(300, 150),
 				..Default::default() // leave all other options as default
 			},

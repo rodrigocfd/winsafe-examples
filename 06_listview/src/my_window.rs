@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 use winsafe::{co, gui};
-use winsafe::{HINSTANCE, IdIdi, NMLVKEYDOWN, POINT, SIZE, WinResult};
+use winsafe::{HINSTANCE, IdIdiStr, NMLVKEYDOWN, POINT, SIZE, WinResult};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -19,7 +19,7 @@ impl MyWindow {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "ListView".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdi::Id(101)).unwrap(),
+				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(),
 				size: SIZE::new(320, 200),
 				..Default::default()
 			},

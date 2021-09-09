@@ -1,5 +1,5 @@
 use winsafe::{co, gui};
-use winsafe::{HINSTANCE, IdIdi, POINT, SIZE, WinResult};
+use winsafe::{HINSTANCE, IdIdiStr, POINT, SIZE, WinResult};
 
 use crate::click_board::ClickBoard;
 
@@ -16,7 +16,7 @@ impl MyWindow {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "Custom control".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdi::Id(101)).unwrap(),
+				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(),
 				size: SIZE::new(300, 150),
 				style: gui::WindowMainOpts::default().style | co::WS::MINIMIZEBOX, // add a minimize button
 				..Default::default()
