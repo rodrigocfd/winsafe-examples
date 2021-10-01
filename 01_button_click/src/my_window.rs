@@ -1,5 +1,5 @@
 use winsafe::gui;
-use winsafe::{HINSTANCE, IdIdiStr, POINT, SIZE, WinResult};
+use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -8,13 +8,13 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> MyWindow {
-		let hinstance = HINSTANCE::GetModuleHandle(None).unwrap(); // handle to application instance
+	pub fn new() -> BoxResult<MyWindow> {
+		let hinstance = HINSTANCE::GetModuleHandle(None)?; // handle to application instance
 
 		let wnd = gui::WindowMain::new( // instantiate the window manager
 			gui::WindowMainOpts {
 				title: "My window title".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(), // load icon from resource ID 101
+				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101))?, // load icon from resource ID 101
 				size: SIZE::new(300, 150),
 				..Default::default() // leave all other options as default
 			},
@@ -31,10 +31,10 @@ impl MyWindow {
 
 		let new_self = Self { wnd, btn_hello };
 		new_self.events(); // attach our events
-		new_self
+		Ok(new_self)
 	}
 
-	pub fn run(&self) -> WinResult<()> {
+	pub fn run(&self) -> BoxResult<i32> {
 		self.wnd.run_main(None) // simply let the window manager do the hard work
 	}
 
@@ -42,7 +42,8 @@ impl MyWindow {
 		self.btn_hello.on().bn_clicked({
 			let self2 = self.wnd.clone(); // clone so it can be passed into the closure
 			move || {
-				self2.hwnd().SetWindowText("Hello, world!").unwrap();
+				self2.hwnd().SetWindowText("Hello, world!")?;
+				Ok(())
 			}
 		});
 	}

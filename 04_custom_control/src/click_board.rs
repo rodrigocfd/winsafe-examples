@@ -1,14 +1,14 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use winsafe::{co, gui, msg};
-use winsafe::{HINSTANCE, IdIdcStr, PAINTSTRUCT, POINT, SIZE};
+use winsafe::{co, gui};
+use winsafe::{BoxResult, HINSTANCE, IdIdcStr, PAINTSTRUCT, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct ClickBoard {
 	wnd:      gui::WindowControl,
 	points:   Rc<RefCell<Vec<POINT>>>,
-	fn_click: Rc<RefCell<Option<Box<dyn Fn(usize)>>>>, // click callback
+	fn_click: Rc<RefCell<Option<Box<dyn Fn(usize) -> BoxResult<()>>>>>, // click callback
 }
 
 impl ClickBoard {
@@ -34,21 +34,24 @@ impl ClickBoard {
 		new_self
 	}
 
-	pub fn on_click<F: Fn(usize) + 'static>(&mut self, func: F) {
+	pub fn on_click<F>(&mut self, func: F)
+		where F: Fn(usize) -> BoxResult<()> + 'static,
+	{
 		*self.fn_click.borrow_mut() = Some(Box::new(func)); // store user callback
 	}
 
 	fn events(&self) {
 		self.wnd.on().wm_l_button_down({
 			let self2 = self.clone();
-			move |p: msg::wm::LButtonDown| {
+			move |p| {
 				let mut points = self2.points.borrow_mut();
 				points.push(p.coords);
-				self2.wnd.hwnd().InvalidateRect(None, true).unwrap(); // redraw now
+				self2.wnd.hwnd().InvalidateRect(None, true)?; // redraw now
 
 				if let Some(fn_click) = self2.fn_click.borrow().as_ref() {
-					fn_click(points.len()); // execute user callback
+					fn_click(points.len())?; // execute user callback
 				}
+				Ok(())
 			}
 		});
 
@@ -56,15 +59,16 @@ impl ClickBoard {
 			let self2 = self.clone();
 			move || {
 				let mut ps = PAINTSTRUCT::default();
-				let hdc = self2.wnd.hwnd().BeginPaint(&mut ps).unwrap();
+				let hdc = self2.wnd.hwnd().BeginPaint(&mut ps)?;
 
-				hdc.MoveToEx(0, 0, None).unwrap(); // first line starts from top left corner
+				hdc.MoveToEx(0, 0, None)?; // first line starts from top left corner
 
 				for pt in self2.points.borrow().iter() {
-					hdc.LineTo(pt.x, pt.y).unwrap();
+					hdc.LineTo(pt.x, pt.y)?;
 				}
 
 				self2.wnd.hwnd().EndPaint(&ps);
+				Ok(())
 			}
 		});
 	}

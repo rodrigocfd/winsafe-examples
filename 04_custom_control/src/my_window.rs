@@ -1,5 +1,5 @@
 use winsafe::{co, gui};
-use winsafe::{HINSTANCE, IdIdiStr, POINT, SIZE, WinResult};
+use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 use crate::click_board::ClickBoard;
 
@@ -10,13 +10,13 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> MyWindow {
-		let hinstance = HINSTANCE::GetModuleHandle(None).unwrap();
+	pub fn new() -> BoxResult<MyWindow> {
+		let hinstance = HINSTANCE::GetModuleHandle(None)?;
 
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "Custom control".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(),
+				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101))?,
 				size: SIZE::new(300, 150),
 				style: gui::WindowMainOpts::default().style | co::WS::MINIMIZEBOX, // add a minimize button
 				..Default::default()
@@ -31,19 +31,19 @@ impl MyWindow {
 
 		let mut new_self = Self { wnd, click_board };
 		new_self.events();
-		new_self
+		Ok(new_self)
 	}
 
-	pub fn run(&self) -> WinResult<()> {
+	pub fn run(&self) -> BoxResult<i32> {
 		self.wnd.run_main(None)
 	}
 
 	fn events(&mut self) {
 		self.click_board.on_click({ // click event of our custom control
 			let wnd = self.wnd.clone();
-			move |num_points: usize| {
-				wnd.hwnd().SetWindowText(
-					&format!("Points: {}", num_points)).unwrap();
+			move |num_points| {
+				wnd.hwnd().SetWindowText(&format!("Points: {}", num_points))?;
+				Ok(())
 			}
 		});
 	}

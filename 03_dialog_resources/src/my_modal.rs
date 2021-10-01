@@ -1,8 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-
-use winsafe::co;
-use winsafe::gui;
+use winsafe::{co, gui, BoxResult};
 
 use crate::ids;
 
@@ -45,9 +43,9 @@ impl MyModal {
 		new_self
 	}
 
-	pub fn show(&self) -> Option<String> {
-		self.wnd.show_modal().unwrap();
-		self.return_val.as_ref().borrow().clone() // return the text typed in the modal
+	pub fn show(&self) -> BoxResult<Option<String>> {
+		self.wnd.show_modal()?;
+		Ok(self.return_val.as_ref().try_borrow()?.clone()) // return the text typed in the modal
 	}
 
 	fn events(&self) {
@@ -56,8 +54,8 @@ impl MyModal {
 		self.wnd.on().wm_init_dialog({
 			let self2 = self.clone();
 			move |_| {
-				self2.txt_incoming.set_text(&self2.input_val.borrow()).unwrap();
-				true
+				self2.txt_incoming.set_text(&self2.input_val.try_borrow()?)?;
+				Ok(true)
 			}
 		});
 
@@ -65,24 +63,27 @@ impl MyModal {
 			let self2 = self.clone();
 			move || {
 				// Save the text typed by the user.
-				*self2.return_val.borrow_mut() = Some(self2.txt_return.text().unwrap());
-				self2.wnd.hwnd().EndDialog(0).unwrap();
+				*self2.return_val.try_borrow_mut()? = Some(self2.txt_return.text()?);
+				self2.wnd.hwnd().EndDialog(0)?;
+				Ok(())
 			}
 		});
 
 		self.btn_cancel.on().bn_clicked({
 			let self2 = self.clone();
 			move || {
-				*self2.return_val.borrow_mut() = None; // no return text
-				self2.wnd.hwnd().EndDialog(0).unwrap();
+				*self2.return_val.try_borrow_mut()? = None; // no return text
+				self2.wnd.hwnd().EndDialog(0)?;
+				Ok(())
 			}
 		});
 
 		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL.into(), { // close on ESC key
 			let self2 = self.clone();
 			move || {
-				*self2.return_val.borrow_mut() = None; // no return text
-				self2.wnd.hwnd().EndDialog(0).unwrap();
+				*self2.return_val.try_borrow_mut()? = None; // no return text
+				self2.wnd.hwnd().EndDialog(0)?;
+				Ok(())
 			}
 		});
 	}

@@ -1,5 +1,5 @@
 use winsafe::{co, gui};
-use winsafe::{HINSTANCE, IdIdiStr, POINT, SIZE, WinResult};
+use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -11,7 +11,7 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> MyWindow {
+	pub fn new() -> BoxResult<MyWindow> {
 		let hinstance = HINSTANCE::GetModuleHandle(None).unwrap();
 
 		let wnd = gui::WindowMain::new(
@@ -67,10 +67,10 @@ impl MyWindow {
 
 		let new_self = Self { wnd, lst, txt, btn, resizer };
 		new_self.events();
-		new_self
+		Ok(new_self)
 	}
 
-	pub fn run(&self) -> WinResult<()> {
+	pub fn run(&self) -> BoxResult<i32> {
 		self.wnd.run_main(None)
 	}
 

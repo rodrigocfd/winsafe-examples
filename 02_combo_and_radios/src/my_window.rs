@@ -1,5 +1,5 @@
 use winsafe::gui;
-use winsafe::{HINSTANCE, IdIdiStr, POINT, SIZE, WinResult};
+use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -9,13 +9,13 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> MyWindow {
-		let hinstance = HINSTANCE::GetModuleHandle(None).unwrap();
+	pub fn new() -> BoxResult<MyWindow> {
+		let hinstance = HINSTANCE::GetModuleHandle(None)?;
 
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "Combo and radios".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101)).unwrap(),
+				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101))?,
 				size: SIZE::new(300, 150),
 				..Default::default()
 			},
@@ -52,10 +52,10 @@ impl MyWindow {
 
 		let new_self = Self { wnd, cmb_cities, rad_seas };
 		new_self.events();
-		new_self
+		Ok(new_self)
 	}
 
-	pub fn run(&self) -> WinResult<()> {
+	pub fn run(&self) -> BoxResult<i32> {
 		self.wnd.run_main(None)
 	}
 
@@ -63,29 +63,30 @@ impl MyWindow {
 		self.wnd.on().wm_create({ // happens once, right after the window is created
 			let self2 = self.clone();
 			move |_| {
-				self2.cmb_cities.items().add(&["Paris", "Madrid", "Lisbon", "Rome"])
-					.unwrap();
-
-				self2.rad_seas[1].set_check(true); // second radio initially selected
-
-				0
+				self2.cmb_cities.items().add(&["Paris", "Madrid", "Lisbon", "Rome"])?;
+				self2.rad_seas[1].set_selected(true); // second radio initially selected
+				Ok(0)
 			}
 		});
 
 		self.cmb_cities.on().cbn_sel_change({ // combo item is selected
 			let self2 = self.clone();
 			move || {
-				let the_city = self2.cmb_cities.items().selected_text().unwrap();
-				self2.wnd.hwnd().SetWindowText(&the_city).unwrap()
+				if let Some(the_city) = self2.cmb_cities.items().selected_text() {
+					self2.wnd.hwnd().SetWindowText(&the_city)?;
+				}
+				Ok(())
 			}
 		});
 
 		self.rad_seas.on().bn_clicked({ // radio item is selected
 			let self2 = self.clone();
 			move || {
-				let selected_radio = self2.rad_seas.checked().unwrap();
-				let the_sea = selected_radio.hwnd().GetWindowText().unwrap();
-				self2.wnd.hwnd().SetWindowText(&the_sea).unwrap();
+				if let Some(selected_radio) = self2.rad_seas.checked() {
+					let the_sea = selected_radio.hwnd().GetWindowText()?;
+					self2.wnd.hwnd().SetWindowText(&the_sea)?;
+				}
+				Ok(())
 			}
 		});
 	}
