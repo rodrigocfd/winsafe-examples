@@ -1,5 +1,5 @@
-use winsafe::gui;
-use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, gui};
+use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -9,7 +9,7 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> BoxResult<MyWindow> {
+	pub fn new() -> ErrResult<MyWindow> {
 		let hinstance = HINSTANCE::GetModuleHandle(None)?;
 
 		let wnd = gui::WindowMain::new(
@@ -55,7 +55,7 @@ impl MyWindow {
 		Ok(new_self)
 	}
 
-	pub fn run(&self) -> BoxResult<i32> {
+	pub fn run(&self) -> ErrResult<i32> {
 		self.wnd.run_main(None)
 	}
 
@@ -64,7 +64,7 @@ impl MyWindow {
 			let self2 = self.clone();
 			move |_| {
 				self2.cmb_cities.items().add(&["Paris", "Madrid", "Lisbon", "Rome"])?;
-				self2.rad_seas[1].set_selected(true); // second radio initially selected
+				self2.rad_seas[1].select(true); // second radio initially selected
 				Ok(0)
 			}
 		});

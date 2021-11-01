@@ -1,17 +1,16 @@
-use winsafe::{co, gui};
-use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, co, gui};
+use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
-	wnd:     gui::WindowMain,
-	lst:     gui::ListView,
-	txt:     gui::Edit,
-	btn:     gui::Button,
-	resizer: gui::Resizer,
+	wnd: gui::WindowMain,
+	lst: gui::ListView,
+	txt: gui::Edit,
+	btn: gui::Button,
 }
 
 impl MyWindow {
-	pub fn new() -> BoxResult<MyWindow> {
+	pub fn new() -> ErrResult<MyWindow> {
 		let hinstance = HINSTANCE::GetModuleHandle(None).unwrap();
 
 		let wnd = gui::WindowMain::new(
@@ -30,6 +29,8 @@ impl MyWindow {
 			gui::ListViewOpts {
 				position: POINT::new(10, 10),
 				size: SIZE::new(280, 100),
+				horz_resize: gui::Horz::Resize, // resize horz/vert with parent
+				vert_resize: gui::Vert::Resize,
 				..Default::default()
 			},
 		);
@@ -39,6 +40,8 @@ impl MyWindow {
 			gui::EditOpts {
 				position: POINT::new(10, 120),
 				width: 180,
+				horz_resize: gui::Horz::Resize, // resizer horizontally with parent
+				vert_resize: gui::Vert::Repos,  // move anchored at parent bottom
 				..Default::default()
 			},
 		);
@@ -48,29 +51,18 @@ impl MyWindow {
 			gui::ButtonOpts {
 				text: "&Button".to_owned(),
 				position: POINT::new(200, 120),
+				horz_resize: gui::Horz::Repos, // move anchored at parent right/bottom
+				vert_resize: gui::Vert::Repos,
 				..Default::default()
 			},
 		);
 
-		let resizer = gui::Resizer::new(&wnd, &[ // responsible for automatically resizing the controls
-
-			// Horizontally/vertically: resize with parent window.
-			(gui::Resz::Resize, gui::Resz::Resize, &[&lst]),
-
-			// Horizontally: resize with parent window.
-			// Vertically: move the control anchored at parent window bottom.
-			(gui::Resz::Resize, gui::Resz::Repos, &[&txt]),
-
-			// Horizontally/vertically: move the control anchored at parent window right/bottom.
-			(gui::Resz::Repos, gui::Resz::Repos, &[&btn]),
-		]);
-
-		let new_self = Self { wnd, lst, txt, btn, resizer };
+		let new_self = Self { wnd, lst, txt, btn };
 		new_self.events();
 		Ok(new_self)
 	}
 
-	pub fn run(&self) -> BoxResult<i32> {
+	pub fn run(&self) -> ErrResult<i32> {
 		self.wnd.run_main(None)
 	}
 

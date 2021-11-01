@@ -1,4 +1,4 @@
-use winsafe::{gui, BoxResult};
+use winsafe::{prelude::*, gui, ErrResult};
 
 use crate::ids;
 use crate::my_modal::MyModal;
@@ -12,19 +12,21 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> BoxResult<MyWindow> {
+	pub fn new() -> ErrResult<MyWindow> {
+		use gui::{Horz as H, Vert as V};
+
 		let wnd = gui::WindowMain::new_dlg(ids::DLG_MAIN, Some(ids::ICO_MAIN), None);
 
-		let lbl_input = gui::Label::new_dlg(&wnd, ids::LBL_INPUT);
-		let txt_input = gui::Edit::new_dlg(&wnd, ids::TXT_INPUT);
-		let btn_show = gui::Button::new_dlg(&wnd, ids::BTN_SHOW);
+		let lbl_input = gui::Label::new_dlg(&wnd, ids::LBL_INPUT, H::None, V::None);
+		let txt_input = gui::Edit::new_dlg(&wnd, ids::TXT_INPUT, H::None, V::None);
+		let btn_show  = gui::Button::new_dlg(&wnd, ids::BTN_SHOW, H::None, V::None);
 
 		let new_self = Self { wnd, lbl_input, txt_input, btn_show };
 		new_self.events();
 		Ok(new_self)
 	}
 
-	pub fn run(&self) -> BoxResult<i32> {
+	pub fn run(&self) -> ErrResult<i32> {
 		self.wnd.run_main(None)
 	}
 

@@ -4,7 +4,7 @@ mod my_window;
 mod my_modal;
 mod ids;
 
-use winsafe::{co, BoxResult, HWND};
+use winsafe::{co, ErrResult, HWND};
 use my_window::MyWindow;
 
 fn main() {
@@ -14,6 +14,6 @@ fn main() {
 	}
 }
 
-fn run_app() -> BoxResult<i32> {
+fn run_app() -> ErrResult<i32> {
 	MyWindow::new()?.run() // create our main window and run it
 }

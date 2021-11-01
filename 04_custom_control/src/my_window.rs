@@ -1,5 +1,5 @@
-use winsafe::{co, gui};
-use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, co, gui};
+use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 use crate::click_board::ClickBoard;
 
@@ -10,7 +10,7 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> BoxResult<MyWindow> {
+	pub fn new() -> ErrResult<MyWindow> {
 		let hinstance = HINSTANCE::GetModuleHandle(None)?;
 
 		let wnd = gui::WindowMain::new(
@@ -34,7 +34,7 @@ impl MyWindow {
 		Ok(new_self)
 	}
 
-	pub fn run(&self) -> BoxResult<i32> {
+	pub fn run(&self) -> ErrResult<i32> {
 		self.wnd.run_main(None)
 	}
 

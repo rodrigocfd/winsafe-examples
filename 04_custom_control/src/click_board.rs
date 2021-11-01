@@ -1,18 +1,18 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use winsafe::{co, gui};
-use winsafe::{BoxResult, HINSTANCE, IdIdcStr, PAINTSTRUCT, POINT, SIZE};
+use winsafe::{prelude::*, co, gui};
+use winsafe::{ErrResult, HINSTANCE, IdIdcStr, PAINTSTRUCT, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct ClickBoard {
 	wnd:      gui::WindowControl,
 	points:   Rc<RefCell<Vec<POINT>>>,
-	fn_click: Rc<RefCell<Option<Box<dyn Fn(usize) -> BoxResult<()>>>>>, // click callback
+	fn_click: Rc<RefCell<Option<Box<dyn Fn(usize) -> ErrResult<()>>>>>, // click callback
 }
 
 impl ClickBoard {
-	pub fn new(parent: &dyn gui::Parent, position: POINT, size: SIZE) -> ClickBoard {
+	pub fn new(parent: &impl gui::Parent, position: POINT, size: SIZE) -> ClickBoard {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
@@ -35,7 +35,7 @@ impl ClickBoard {
 	}
 
 	pub fn on_click<F>(&mut self, func: F)
-		where F: Fn(usize) -> BoxResult<()> + 'static,
+		where F: Fn(usize) -> ErrResult<()> + 'static,
 	{
 		*self.fn_click.borrow_mut() = Some(Box::new(func)); // store user callback
 	}

@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use winsafe::{co, gui, BoxResult};
+use winsafe::{prelude::*, co, gui, ErrResult};
 
 use crate::ids;
 
@@ -20,15 +20,17 @@ pub struct MyModal {
 }
 
 impl MyModal {
-	pub fn new(parent: &dyn gui::Parent, input_text: &str) -> MyModal {
+	pub fn new(parent: &impl gui::Parent, input_text: &str) -> MyModal {
+		use gui::{Horz as H, Vert as V};
+
 		let wnd = gui::WindowModal::new_dlg(parent, ids::DLG_MODAL);
 
-		let lbl_incoming = gui::Label::new_dlg(&wnd, ids::LBL_INCOMING);
-		let txt_incoming = gui::Edit::new_dlg(&wnd, ids::TXT_INCOMING);
-		let lbl_return = gui::Label::new_dlg(&wnd, ids::LBL_RETURN);
-		let txt_return = gui::Edit::new_dlg(&wnd, ids::TXT_RETURN);
-		let btn_ok = gui::Button::new_dlg(&wnd, ids::BTN_OK);
-		let btn_cancel = gui::Button::new_dlg(&wnd, ids::BTN_CANCEL);
+		let lbl_incoming = gui::Label::new_dlg(&wnd, ids::LBL_INCOMING, H::None, V::None);
+		let txt_incoming = gui::Edit::new_dlg(&wnd, ids::TXT_INCOMING, H::None, V::None);
+		let lbl_return   = gui::Label::new_dlg(&wnd, ids::LBL_RETURN, H::None, V::None);
+		let txt_return   = gui::Edit::new_dlg(&wnd, ids::TXT_RETURN, H::None, V::None);
+		let btn_ok       = gui::Button::new_dlg(&wnd, ids::BTN_OK, H::None, V::None);
+		let btn_cancel   = gui::Button::new_dlg(&wnd, ids::BTN_CANCEL, H::None, V::None);
 
 		let new_self = Self {
 			wnd,
@@ -43,7 +45,7 @@ impl MyModal {
 		new_self
 	}
 
-	pub fn show(&self) -> BoxResult<Option<String>> {
+	pub fn show(&self) -> ErrResult<Option<String>> {
 		self.wnd.show_modal()?;
 		Ok(self.return_val.as_ref().try_borrow()?.clone()) // return the text typed in the modal
 	}

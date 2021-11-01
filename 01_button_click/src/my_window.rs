@@ -1,5 +1,5 @@
-use winsafe::gui;
-use winsafe::{BoxResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, gui};
+use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -8,7 +8,7 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> BoxResult<MyWindow> {
+	pub fn new() -> ErrResult<MyWindow> {
 		let hinstance = HINSTANCE::GetModuleHandle(None)?; // handle to application instance
 
 		let wnd = gui::WindowMain::new( // instantiate the window manager
@@ -34,7 +34,7 @@ impl MyWindow {
 		Ok(new_self)
 	}
 
-	pub fn run(&self) -> BoxResult<i32> {
+	pub fn run(&self) -> ErrResult<i32> {
 		self.wnd.run_main(None) // simply let the window manager do the hard work
 	}
 
