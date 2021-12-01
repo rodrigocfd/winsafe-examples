@@ -12,7 +12,7 @@ pub struct ClickBoard {
 }
 
 impl ClickBoard {
-	pub fn new(parent: &impl gui::Parent, position: POINT, size: SIZE) -> ClickBoard {
+	pub fn new(parent: &impl Parent, position: POINT, size: SIZE) -> ClickBoard {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {

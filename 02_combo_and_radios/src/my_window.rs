@@ -72,7 +72,7 @@ impl MyWindow {
 		self.cmb_cities.on().cbn_sel_change({ // combo item is selected
 			let self2 = self.clone();
 			move || {
-				if let Some(the_city) = self2.cmb_cities.items().selected_text() {
+				if let Some(the_city) = self2.cmb_cities.items().selected_text()? {
 					self2.wnd.hwnd().SetWindowText(&the_city)?;
 				}
 				Ok(())

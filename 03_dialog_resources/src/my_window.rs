@@ -13,13 +13,13 @@ pub struct MyWindow {
 
 impl MyWindow {
 	pub fn new() -> ErrResult<MyWindow> {
-		use gui::{Horz as H, Vert as V};
+		let dont_move = (gui::Horz::None, gui::Vert::None);
 
 		let wnd = gui::WindowMain::new_dlg(ids::DLG_MAIN, Some(ids::ICO_MAIN), None);
 
-		let lbl_input = gui::Label::new_dlg(&wnd, ids::LBL_INPUT, H::None, V::None);
-		let txt_input = gui::Edit::new_dlg(&wnd, ids::TXT_INPUT, H::None, V::None);
-		let btn_show  = gui::Button::new_dlg(&wnd, ids::BTN_SHOW, H::None, V::None);
+		let lbl_input = gui::Label::new_dlg(&wnd, ids::LBL_INPUT, dont_move);
+		let txt_input = gui::Edit::new_dlg(&wnd, ids::TXT_INPUT, dont_move);
+		let btn_show  = gui::Button::new_dlg(&wnd, ids::BTN_SHOW, dont_move);
 
 		let new_self = Self { wnd, lbl_input, txt_input, btn_show };
 		new_self.events();
@@ -31,14 +31,6 @@ impl MyWindow {
 	}
 
 	fn events(&self) {
-		self.wnd.on().wm_init_dialog({
-			let self2 = self.clone();
-			move |_| {
-				self2.lbl_input.resize_to_text()?;
-				Ok(true)
-			}
-		});
-
 		self.btn_show.on().bn_clicked({
 			let self2 = self.clone();
 			move || {

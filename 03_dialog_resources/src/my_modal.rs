@@ -20,17 +20,17 @@ pub struct MyModal {
 }
 
 impl MyModal {
-	pub fn new(parent: &impl gui::Parent, input_text: &str) -> MyModal {
-		use gui::{Horz as H, Vert as V};
+	pub fn new(parent: &impl Parent, input_text: &str) -> MyModal {
+		let dont_move = (gui::Horz::None, gui::Vert::None);
 
 		let wnd = gui::WindowModal::new_dlg(parent, ids::DLG_MODAL);
 
-		let lbl_incoming = gui::Label::new_dlg(&wnd, ids::LBL_INCOMING, H::None, V::None);
-		let txt_incoming = gui::Edit::new_dlg(&wnd, ids::TXT_INCOMING, H::None, V::None);
-		let lbl_return   = gui::Label::new_dlg(&wnd, ids::LBL_RETURN, H::None, V::None);
-		let txt_return   = gui::Edit::new_dlg(&wnd, ids::TXT_RETURN, H::None, V::None);
-		let btn_ok       = gui::Button::new_dlg(&wnd, ids::BTN_OK, H::None, V::None);
-		let btn_cancel   = gui::Button::new_dlg(&wnd, ids::BTN_CANCEL, H::None, V::None);
+		let lbl_incoming = gui::Label::new_dlg(&wnd, ids::LBL_INCOMING, dont_move);
+		let txt_incoming = gui::Edit::new_dlg(&wnd, ids::TXT_INCOMING, dont_move);
+		let lbl_return   = gui::Label::new_dlg(&wnd, ids::LBL_RETURN, dont_move);
+		let txt_return   = gui::Edit::new_dlg(&wnd, ids::TXT_RETURN, dont_move);
+		let btn_ok       = gui::Button::new_dlg(&wnd, ids::BTN_OK, dont_move);
+		let btn_cancel   = gui::Button::new_dlg(&wnd, ids::BTN_CANCEL, dont_move);
 
 		let new_self = Self {
 			wnd,

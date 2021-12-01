@@ -4,7 +4,7 @@ mod my_window;
 mod my_modal;
 mod ids;
 
-use winsafe::{co, ErrResult, HWND};
+use winsafe::{prelude::*, co, ErrResult, HWND};
 use my_window::MyWindow;
 
 fn main() {

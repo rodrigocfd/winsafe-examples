@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, co, gui};
+use winsafe::{co, gui};
 use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
 
 #[derive(Clone)]
@@ -40,7 +40,7 @@ impl MyWindow {
 			gui::EditOpts {
 				position: POINT::new(10, 120),
 				width: 180,
-				horz_resize: gui::Horz::Resize, // resizer horizontally with parent
+				horz_resize: gui::Horz::Resize, // resize horizontally with parent
 				vert_resize: gui::Vert::Repos,  // move anchored at parent bottom
 				..Default::default()
 			},
