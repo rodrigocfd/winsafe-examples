@@ -1,8 +1,8 @@
 use winsafe::{prelude::*, self as w, co, shell};
 
-use super::{ids, MyMain};
+use super::{ids, WndMain};
 
-impl MyMain {
+impl WndMain {
 	pub(super) fn events(&self) {
 		self.wnd.on().wm_init_menu_popup({
 			let self2 = self.clone();

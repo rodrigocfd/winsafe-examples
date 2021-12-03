@@ -2,17 +2,17 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use winsafe::{gui, shell};
 
-use crate::wnd_tracker::MyTracker;
-use crate::wnd_video::MyVideo;
+use crate::wnd_tracker::WndTracker;
+use crate::wnd_video::WndVideo;
 
 mod ids;
 mod wnd_main_events;
 mod wnd_main_funcs;
 
 #[derive(Clone)]
-pub struct MyMain {
+pub struct WndMain {
 	wnd:         gui::WindowMain,
-	wnd_video:   MyVideo,
-	wnd_tracker: MyTracker,
+	wnd_video:   WndVideo,
+	wnd_tracker: WndTracker,
 	taskbar:     Rc<RefCell<Option<shell::ITaskbarList4>>>,
 }

@@ -1,9 +1,9 @@
 use defer_lite::defer;
 use winsafe::{prelude::*, self as w, co};
 
-use super::MyVideo;
+use super::WndVideo;
 
-impl MyVideo {
+impl WndVideo {
 	pub(super) fn events(&self) {
 		self.wnd.on().wm_destroy({
 			let self2 = self.clone();

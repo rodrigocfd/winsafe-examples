@@ -4,9 +4,9 @@ This example is a video playback application which uses [DirectShow](https://doc
 
 The application is composed of 3 windows:
 
-* `MyMain` – the main application window, which hosts the other 2 windows;
-* `MyTracker` – the progress bar at the bottom;
-* `MyVideo` – hosts the DirectShow objects and renders the video.
+* `WndMain` – the main application window, which hosts the other 2 windows;
+* `WndTracker` – the progress bar at the bottom;
+* `WndVideo` – hosts the DirectShow objects and renders the video.
 
 Note that the application includes no video codecs on its own: it will use video codecs already installed on your machine. If you try to load a video to which you don't have the proper codec, it will fail.
 

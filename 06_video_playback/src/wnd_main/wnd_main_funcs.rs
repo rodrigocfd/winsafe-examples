@@ -2,11 +2,11 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use winsafe::{self as w, co, gui};
 
-use super::{ids, MyMain};
-use crate::wnd_tracker::MyTracker;
-use crate::wnd_video::MyVideo;
+use super::{ids, WndMain};
+use crate::wnd_tracker::WndTracker;
+use crate::wnd_video::WndVideo;
 
-impl MyMain {
+impl WndMain {
 	pub fn new() -> w::ErrResult<Self> {
 		let hinst = w::HINSTANCE::GetModuleHandle(None)?;
 		let (menu, accel_table) = Self::build_menu()?;
@@ -24,10 +24,10 @@ impl MyMain {
 			},
 		);
 
-		let wnd_video = MyVideo::new(&wnd,
+		let wnd_video = WndVideo::new(&wnd,
 			ids::WND_VIDEO, w::POINT::new(0, 0), w::SIZE::new(700, 380));
 
-		let wnd_tracker = MyTracker::new(&wnd,
+		let wnd_tracker = WndTracker::new(&wnd,
 			ids::WND_TRACKER, w::POINT::new(0, 380), w::SIZE::new(700, 20));
 
 		let taskbar = Rc::new(RefCell::new(None)); // taskbar object initially not loaded

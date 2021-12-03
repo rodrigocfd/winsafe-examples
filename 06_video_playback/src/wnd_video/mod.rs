@@ -6,7 +6,7 @@ mod wnd_video_events;
 mod wnd_video_funcs;
 
 #[derive(Clone)]
-pub struct MyVideo {
+pub struct WndVideo {
 	wnd:      gui::WindowControl,
 	com_objs: Rc<RefCell<Option<ComObjs>>>,
 }

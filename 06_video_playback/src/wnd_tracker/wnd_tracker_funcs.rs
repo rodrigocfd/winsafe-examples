@@ -2,9 +2,9 @@ use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 use winsafe::{prelude::*, self as w, co, gui, ErrResult};
 
-use super::MyTracker;
+use super::WndTracker;
 
-impl MyTracker {
+impl WndTracker {
 	pub fn new(parent: &impl Parent, ctrl_id: u16, position: w::POINT, size: w::SIZE) -> Self {
 		let wnd = gui::WindowControl::new(
 			parent,

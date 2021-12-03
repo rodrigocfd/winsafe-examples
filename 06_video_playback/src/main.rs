@@ -8,15 +8,15 @@ mod wnd_tracker;
 mod wnd_video;
 
 fn main() {
-	if let Err(e) = do_shit() {
+	if let Err(e) = make_it_happen() {
 		w::HWND::NULL.MessageBox(&e.to_string(),
 			"Unhandled error", w::co::MB::ICONERROR).unwrap();
 	}
 }
 
-fn do_shit() -> w::ErrResult<i32> {
+fn make_it_happen() -> w::ErrResult<i32> {
 	w::CoInitializeEx(w::co::COINIT::APARTMENTTHREADED)?;
 	defer! { w::CoUninitialize(); }
 
-	wnd_main::MyMain::new()?.run()
+	wnd_main::WndMain::new()?.run()
 }

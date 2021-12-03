@@ -1,9 +1,9 @@
 use defer_lite::defer;
 use winsafe::{prelude::*, self as w, co};
 
-use super::MyTracker;
+use super::WndTracker;
 
-impl MyTracker {
+impl WndTracker {
 	pub(super) fn events(&self) {
 		self.wnd.on().wm_paint({
 			let self2 = self.clone();

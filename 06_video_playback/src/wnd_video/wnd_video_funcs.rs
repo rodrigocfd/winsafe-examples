@@ -2,9 +2,9 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use winsafe::{prelude::*, self as w, co, dshow, gui};
 
-use super::{ComObjs, MyVideo};
+use super::{ComObjs, WndVideo};
 
-impl MyVideo {
+impl WndVideo {
 	pub fn new(
 		parent: &impl Parent,
 		ctrl_id: u16,
