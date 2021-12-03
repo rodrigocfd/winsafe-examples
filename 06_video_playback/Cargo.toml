@@ -1,0 +1,13 @@
+[package]
+name = "playback"
+version = "1.0.0"
+authors = ["Rodrigo Cesar de Freitas Dias <rcesar@gmail.com>"]
+edition = "2021"
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[dependencies]
+defer-lite = "1.0.0"
+winsafe = { version = "0.0.8", features = ["dshow", "shell"] }
