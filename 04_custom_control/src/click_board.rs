@@ -12,11 +12,11 @@ pub struct ClickBoard {
 }
 
 impl ClickBoard {
-	pub fn new(parent: &impl Parent, position: POINT, size: SIZE) -> ClickBoard {
+	pub fn new(parent: &impl GuiParent, position: POINT, size: SIZE) -> ErrResult<ClickBoard> {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
-				class_cursor: HINSTANCE::NULL.LoadCursor(IdIdcStr::Idc(co::IDC::CROSS)).unwrap(),
+				class_cursor: HINSTANCE::NULL.LoadCursor(IdIdcStr::Idc(co::IDC::CROSS))?,
 				position,
 				size,
 				ex_style: gui::WindowControlOpts::default().ex_style | co::WS_EX::CLIENTEDGE,
@@ -31,7 +31,7 @@ impl ClickBoard {
 		};
 
 		new_self.events();
-		new_self
+		Ok(new_self)
 	}
 
 	pub fn on_click<F>(&mut self, func: F)

@@ -1,12 +1,12 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use winsafe::{prelude::*, self as w, co, dshow, gui};
+use winsafe::{prelude::*, self as w, co, gui};
 
 use super::{ComObjs, WndVideo};
 
 impl WndVideo {
 	pub fn new(
-		parent: &impl Parent,
+		parent: &impl GuiParent,
 		ctrl_id: u16,
 		position: w::POINT, size: w::SIZE) -> Self
 	{
@@ -41,26 +41,26 @@ impl WndVideo {
 	pub fn load(&self, video_path: &str) -> w::ErrResult<()> {
 		self.unload()?;
 
-		let graph_builder = w::CoCreateInstance::<dshow::IGraphBuilder>(
-			&dshow::clsid::FilterGraph,
+		let graph_builder = w::CoCreateInstance::<w::IGraphBuilder>(
+			&w::CLSID::FilterGraph,
 			None,
 			co::CLSCTX::INPROC_SERVER,
 		)?;
 
-		let vmr = w::CoCreateInstance::<dshow::IBaseFilter>(
-			&dshow::clsid::EnhancedVideoRenderer,
+		let vmr = w::CoCreateInstance::<w::IBaseFilter>(
+			&w::CLSID::EnhancedVideoRenderer,
 			None,
 			co::CLSCTX::INPROC_SERVER,
 		)?;
 
 		graph_builder.AddFilter(&vmr, "EVR")?;
 
-		let get_svc = vmr.QueryInterface::<dshow::IMFGetService>()?;
+		let get_svc = vmr.QueryInterface::<w::IMFGetService>()?;
 
-		let controller_evr = get_svc.GetService::<dshow::IMFVideoDisplayControl>(
-			&dshow::guid::MR_VIDEO_RENDER_SERVICE)?;
+		let controller_evr = get_svc.GetService::<w::IMFVideoDisplayControl>(
+			&w::GUID::MR_VIDEO_RENDER_SERVICE)?;
 		controller_evr.SetVideoWindow(self.wnd.hwnd())?;
-		controller_evr.SetAspectRatioMode(dshow::co::MFVideoARMode::PreservePicture)?;
+		controller_evr.SetAspectRatioMode(co::MFVideoARMode::PreservePicture)?;
 
 		graph_builder.RenderFile(video_path)?;
 
@@ -68,9 +68,9 @@ impl WndVideo {
 		self.wnd.hwnd().ScreenToClientRc(&mut rc)?;       // now relative to parent
 		controller_evr.SetVideoPosition(None, Some(rc))?; // set video to fit window
 
-		let media_seek = graph_builder.QueryInterface::<dshow::IMediaSeeking>()?;
+		let media_seek = graph_builder.QueryInterface::<w::IMediaSeeking>()?;
 
-		let media_ctrl = graph_builder.QueryInterface::<dshow::IMediaControl>()?;
+		let media_ctrl = graph_builder.QueryInterface::<w::IMediaControl>()?;
 		media_ctrl.Run()?;
 
 		*self.com_objs.try_borrow_mut()? = Some( // finally save the COM objects
@@ -82,7 +82,7 @@ impl WndVideo {
 
 	pub fn is_running(&self) -> w::ErrResult<bool> {
 		Ok(match self.com_objs.try_borrow()?.as_ref() {
-			Some(com_ojbs) => com_ojbs.media_ctrl.GetState(None)? == dshow::co::FILTER_STATE::Running,
+			Some(com_ojbs) => com_ojbs.media_ctrl.GetState(None)? == co::FILTER_STATE::Running,
 			None => false,
 		})
 	}
@@ -119,8 +119,8 @@ impl WndVideo {
 	pub fn set_pos(&self, ms: i64) -> w::ErrResult<()> {
 		if let Some(com_objs) = self.com_objs.try_borrow_mut()?.as_ref() {
 			com_objs.media_seek.SetPositions(
-				ms * 10_000, dshow::co::SEEKING_FLAGS::AbsolutePositioning,
-				0, dshow::co::SEEKING_FLAGS::NoPositioning,
+				ms * 10_000, co::SEEKING_FLAGS::AbsolutePositioning,
+				0, co::SEEKING_FLAGS::NoPositioning,
 			)?;
 		}
 		Ok(())

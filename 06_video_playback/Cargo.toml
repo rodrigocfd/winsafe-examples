@@ -10,4 +10,4 @@ codegen-units = 1
 
 [dependencies]
 defer-lite = "1.0.0"
-winsafe = { version = "0.0.8", features = ["dshow", "shell"] }
+winsafe = { version = "0.0.9", features = ["gui", "dshow"] }

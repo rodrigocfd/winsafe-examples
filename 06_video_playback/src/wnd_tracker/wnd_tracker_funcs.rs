@@ -5,7 +5,11 @@ use winsafe::{prelude::*, self as w, co, gui, ErrResult};
 use super::WndTracker;
 
 impl WndTracker {
-	pub fn new(parent: &impl Parent, ctrl_id: u16, position: w::POINT, size: w::SIZE) -> Self {
+	pub fn new(
+		parent: &impl GuiParent,
+		ctrl_id: u16,
+		position: w::POINT, size: w::SIZE) -> w::ErrResult<Self>
+	{
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
@@ -14,7 +18,7 @@ impl WndTracker {
 				size,
 				horz_resize: gui::Horz::Resize,
 				vert_resize: gui::Vert::Repos,
-				class_cursor: w::HINSTANCE::NULL.LoadCursor(w::IdIdcStr::Idc(co::IDC::HAND)).unwrap(),
+				class_cursor: w::HINSTANCE::NULL.LoadCursor(w::IdIdcStr::Idc(co::IDC::HAND))?,
 				..Default::default()
 			},
 		);
@@ -27,7 +31,7 @@ impl WndTracker {
 			arrows_cb:    Rc::new(RefCell::new(None)),
 		};
 		new_self.events();
-		new_self
+		Ok(new_self)
 	}
 
 	pub fn set_rendered_pos(&self, position_pct: f32) {

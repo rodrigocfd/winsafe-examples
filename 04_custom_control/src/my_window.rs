@@ -27,7 +27,7 @@ impl MyWindow {
 			&wnd,
 			POINT::new(10, 10),
 			SIZE::new(280, 130),
-		);
+		)?;
 
 		let mut new_self = Self { wnd, click_board };
 		new_self.events();

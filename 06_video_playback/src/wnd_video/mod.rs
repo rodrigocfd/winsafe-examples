@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use winsafe::{dshow, gui};
+use winsafe::{self as w, gui};
 
 mod wnd_video_events;
 mod wnd_video_funcs;
@@ -12,9 +12,9 @@ pub struct WndVideo {
 }
 
 struct ComObjs {
-	graph_builder:  dshow::IGraphBuilder,
-	vmr:            dshow::IBaseFilter,
-	controller_evr: dshow::IMFVideoDisplayControl,
-	media_seek:     dshow::IMediaSeeking,
-	media_ctrl:     dshow::IMediaControl,
+	graph_builder:  w::IGraphBuilder,
+	vmr:            w::IBaseFilter,
+	controller_evr: w::IMFVideoDisplayControl,
+	media_seek:     w::IMediaSeeking,
+	media_ctrl:     w::IMediaControl,
 }

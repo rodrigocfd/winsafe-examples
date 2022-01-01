@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use winsafe::{self as w, co, gui};
+use winsafe::{prelude::*, self as w, co, gui};
 
 use super::{ids, WndMain};
 use crate::wnd_tracker::WndTracker;
@@ -28,7 +28,7 @@ impl WndMain {
 			ids::WND_VIDEO, w::POINT::new(0, 0), w::SIZE::new(700, 380));
 
 		let wnd_tracker = WndTracker::new(&wnd,
-			ids::WND_TRACKER, w::POINT::new(0, 380), w::SIZE::new(700, 20));
+			ids::WND_TRACKER, w::POINT::new(0, 380), w::SIZE::new(700, 20))?;
 
 		let taskbar = Rc::new(RefCell::new(None)); // taskbar object initially not loaded
 

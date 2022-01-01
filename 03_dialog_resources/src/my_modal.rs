@@ -20,7 +20,7 @@ pub struct MyModal {
 }
 
 impl MyModal {
-	pub fn new(parent: &impl Parent, input_text: &str) -> MyModal {
+	pub fn new(parent: &impl GuiParent, input_text: &str) -> MyModal {
 		let dont_move = (gui::Horz::None, gui::Vert::None);
 
 		let wnd = gui::WindowModal::new_dlg(parent, ids::DLG_MODAL);

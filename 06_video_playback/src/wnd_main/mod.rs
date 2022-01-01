@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use winsafe::{gui, shell};
+use winsafe::{self as w, gui};
 
 use crate::wnd_tracker::WndTracker;
 use crate::wnd_video::WndVideo;
@@ -14,5 +14,5 @@ pub struct WndMain {
 	wnd:         gui::WindowMain,
 	wnd_video:   WndVideo,
 	wnd_tracker: WndTracker,
-	taskbar:     Rc<RefCell<Option<shell::ITaskbarList4>>>,
+	taskbar:     Rc<RefCell<Option<w::ITaskbarList4>>>,
 }

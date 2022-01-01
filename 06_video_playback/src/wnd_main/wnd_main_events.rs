@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, self as w, co, shell};
+use winsafe::{prelude::*, self as w, co};
 
 use super::{ids, WndMain};
 
@@ -23,17 +23,17 @@ impl WndMain {
 		self.wnd.on().wm_command_accel_menu(ids::MNU_FILE_OPEN, {
 			let self2 = self.clone();
 			move || {
-				let fileo = w::CoCreateInstance::<shell::IFileOpenDialog>(
-					&shell::clsid::FileOpenDialog,
+				let fileo = w::CoCreateInstance::<w::IFileOpenDialog>(
+					&w::CLSID::FileOpenDialog,
 					None,
 					co::CLSCTX::INPROC_SERVER,
 				)?;
 
 				fileo.SetOptions(
 					fileo.GetOptions()?
-						| shell::co::FOS::FORCEFILESYSTEM
-						| shell::co::FOS::ALLOWMULTISELECT
-						| shell::co::FOS::FILEMUSTEXIST,
+						| co::FOS::FORCEFILESYSTEM
+						| co::FOS::ALLOWMULTISELECT
+						| co::FOS::FILEMUSTEXIST,
 				)?;
 
 				fileo.SetFileTypes(&[
@@ -49,13 +49,13 @@ impl WndMain {
 				if fileo.Show(self2.wnd.hwnd())? {
 					self2.wnd_video.load(
 						&fileo.GetResult()?
-							.GetDisplayName(shell::co::SIGDN::FILESYSPATH)?,
+							.GetDisplayName(co::SIGDN::FILESYSPATH)?,
 					)?;
 
 					let mut taskbar = self2.taskbar.try_borrow_mut()?;
 					if taskbar.is_none() { // taskbar object not created yet?
 						*taskbar = Some(
-							w::CoCreateInstance(&shell::clsid::TaskbarList,
+							w::CoCreateInstance(&w::CLSID::TaskbarList,
 								None, co::CLSCTX::INPROC_SERVER)?,
 						);
 					}
@@ -86,9 +86,9 @@ impl WndMain {
 				if let Some(taskbar) = self2.taskbar.try_borrow()?.as_ref() {
 					taskbar.SetProgressState(self2.wnd.hwnd(),
 						if self2.wnd_video.is_running()? { // toggle taskbar green/yellow color
-							shell::co::TBPF::NORMAL
+							co::TBPF::NORMAL
 						} else {
-							shell::co::TBPF::PAUSED
+							co::TBPF::PAUSED
 						})?;
 				}
 
