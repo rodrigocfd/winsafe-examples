@@ -42,13 +42,13 @@ impl WndVideo {
 		self.unload()?;
 
 		let graph_builder = w::CoCreateInstance::<w::IGraphBuilder>(
-			&w::CLSID::FilterGraph,
+			&co::CLSID::FilterGraph,
 			None,
 			co::CLSCTX::INPROC_SERVER,
 		)?;
 
 		let vmr = w::CoCreateInstance::<w::IBaseFilter>(
-			&w::CLSID::EnhancedVideoRenderer,
+			&co::CLSID::EnhancedVideoRenderer,
 			None,
 			co::CLSCTX::INPROC_SERVER,
 		)?;
@@ -58,7 +58,7 @@ impl WndVideo {
 		let get_svc = vmr.QueryInterface::<w::IMFGetService>()?;
 
 		let controller_evr = get_svc.GetService::<w::IMFVideoDisplayControl>(
-			&w::GUID::MR_VIDEO_RENDER_SERVICE)?;
+			&co::DSHOW_SERVICE::MR_VIDEO_RENDER_SERVICE)?;
 		controller_evr.SetVideoWindow(self.wnd.hwnd())?;
 		controller_evr.SetAspectRatioMode(co::MFVideoARMode::PreservePicture)?;
 

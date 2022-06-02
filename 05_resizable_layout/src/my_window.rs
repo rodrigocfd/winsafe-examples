@@ -1,5 +1,4 @@
-use winsafe::{prelude::*, co, gui};
-use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, co, gui, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -10,13 +9,11 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> ErrResult<MyWindow> {
-		let hinstance = HINSTANCE::GetModuleHandle(None)?;
-
+	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "Resizable layout".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101))?,
+				class_icon: gui::Icon::Id(101),
 				size: SIZE::new(300, 150),
 				style: gui::WindowMainOpts::default().style |
 					co::WS::MINIMIZEBOX | co::WS::MAXIMIZEBOX | co::WS::SIZEBOX, // window can be resized
@@ -59,10 +56,10 @@ impl MyWindow {
 
 		let new_self = Self { wnd, lst, txt, btn };
 		new_self.events();
-		Ok(new_self)
+		new_self
 	}
 
-	pub fn run(&self) -> ErrResult<i32> {
+	pub fn run(&self) -> gui::RunResult<i32> {
 		self.wnd.run_main(None)
 	}
 

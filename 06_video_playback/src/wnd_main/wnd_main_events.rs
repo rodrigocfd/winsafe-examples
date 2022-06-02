@@ -24,7 +24,7 @@ impl WndMain {
 			let self2 = self.clone();
 			move || {
 				let fileo = w::CoCreateInstance::<w::IFileOpenDialog>(
-					&w::CLSID::FileOpenDialog,
+					&co::CLSID::FileOpenDialog,
 					None,
 					co::CLSCTX::INPROC_SERVER,
 				)?;
@@ -55,8 +55,11 @@ impl WndMain {
 					let mut taskbar = self2.taskbar.try_borrow_mut()?;
 					if taskbar.is_none() { // taskbar object not created yet?
 						*taskbar = Some(
-							w::CoCreateInstance(&w::CLSID::TaskbarList,
-								None, co::CLSCTX::INPROC_SERVER)?,
+							w::CoCreateInstance(
+								&co::CLSID::TaskbarList,
+								None,
+								co::CLSCTX::INPROC_SERVER,
+							)?,
 						);
 					}
 

@@ -8,7 +8,7 @@ impl WndTracker {
 	pub fn new(
 		parent: &impl GuiParent,
 		ctrl_id: u16,
-		position: w::POINT, size: w::SIZE) -> w::ErrResult<Self>
+		position: w::POINT, size: w::SIZE) -> Self
 	{
 		let wnd = gui::WindowControl::new(
 			parent,
@@ -18,7 +18,7 @@ impl WndTracker {
 				size,
 				horz_resize: gui::Horz::Resize,
 				vert_resize: gui::Vert::Repos,
-				class_cursor: w::HINSTANCE::NULL.LoadCursor(w::IdIdcStr::Idc(co::IDC::HAND))?,
+				class_cursor: gui::Cursor::Idc(co::IDC::HAND),
 				..Default::default()
 			},
 		);
@@ -31,7 +31,7 @@ impl WndTracker {
 			arrows_cb:    Rc::new(RefCell::new(None)),
 		};
 		new_self.events();
-		Ok(new_self)
+		new_self
 	}
 
 	pub fn set_rendered_pos(&self, position_pct: f32) {

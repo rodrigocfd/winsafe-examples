@@ -1,5 +1,4 @@
-use winsafe::{prelude::*, co, gui};
-use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, co, gui, POINT, SIZE};
 
 use crate::click_board::ClickBoard;
 
@@ -10,13 +9,11 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> ErrResult<MyWindow> {
-		let hinstance = HINSTANCE::GetModuleHandle(None)?;
-
+	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "Custom control".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101))?,
+				class_icon: gui::Icon::Id(101),
 				size: SIZE::new(300, 150),
 				style: gui::WindowMainOpts::default().style | co::WS::MINIMIZEBOX, // add a minimize button
 				..Default::default()
@@ -27,14 +24,14 @@ impl MyWindow {
 			&wnd,
 			POINT::new(10, 10),
 			SIZE::new(280, 130),
-		)?;
+		);
 
 		let mut new_self = Self { wnd, click_board };
 		new_self.events();
-		Ok(new_self)
+		new_self
 	}
 
-	pub fn run(&self) -> ErrResult<i32> {
+	pub fn run(&self) -> gui::RunResult<i32> {
 		self.wnd.run_main(None)
 	}
 

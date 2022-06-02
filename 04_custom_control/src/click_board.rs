@@ -1,8 +1,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use winsafe::{prelude::*, co, gui};
-use winsafe::{ErrResult, HINSTANCE, IdIdcStr, PAINTSTRUCT, POINT, SIZE};
+use winsafe::{prelude::*, co, gui, ErrResult, PAINTSTRUCT, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct ClickBoard {
@@ -12,11 +11,11 @@ pub struct ClickBoard {
 }
 
 impl ClickBoard {
-	pub fn new(parent: &impl GuiParent, position: POINT, size: SIZE) -> ErrResult<ClickBoard> {
+	pub fn new(parent: &impl GuiParent, position: POINT, size: SIZE) -> Self {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
-				class_cursor: HINSTANCE::NULL.LoadCursor(IdIdcStr::Idc(co::IDC::CROSS))?,
+				class_cursor: gui::Cursor::Idc(co::IDC::CROSS),
 				position,
 				size,
 				ex_style: gui::WindowControlOpts::default().ex_style | co::WS_EX::CLIENTEDGE,
@@ -31,7 +30,7 @@ impl ClickBoard {
 		};
 
 		new_self.events();
-		Ok(new_self)
+		new_self
 	}
 
 	pub fn on_click<F>(&mut self, func: F)

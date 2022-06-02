@@ -9,14 +9,18 @@ mod wnd_video;
 
 fn main() {
 	if let Err(e) = make_it_happen() {
-		w::HWND::NULL.MessageBox(&e.to_string(),
-			"Unhandled error", w::co::MB::ICONERROR).unwrap();
+		w::HWND::NULL.MessageBox(
+			&e.to_string(), "Unhandled error", w::co::MB::ICONERROR).unwrap();
 	}
 }
 
 fn make_it_happen() -> w::ErrResult<i32> {
-	w::CoInitializeEx(w::co::COINIT::APARTMENTTHREADED)?;
+	w::CoInitializeEx(
+		w::co::COINIT::APARTMENTTHREADED
+		| w::co::COINIT::DISABLE_OLE1DDE)?;
 	defer! { w::CoUninitialize(); }
 
-	wnd_main::WndMain::new()?.run()
+	wnd_main::WndMain::new()
+		.run()
+		.map_err(|err| err.into())
 }

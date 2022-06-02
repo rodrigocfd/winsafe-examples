@@ -13,5 +13,7 @@ fn main() {
 }
 
 fn run_app() -> ErrResult<i32> {
-	MyWindow::new()?.run() // create our main window and run it
+	MyWindow::new()
+		.run()
+		.map_err(|err| err.into())
 }

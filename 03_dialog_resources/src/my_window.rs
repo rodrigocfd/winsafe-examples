@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, gui, ErrResult};
+use winsafe::{prelude::*, gui};
 
 use crate::ids;
 use crate::my_modal::MyModal;
@@ -12,7 +12,7 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> ErrResult<MyWindow> {
+	pub fn new() -> Self {
 		let dont_move = (gui::Horz::None, gui::Vert::None);
 
 		let wnd = gui::WindowMain::new_dlg(ids::DLG_MAIN, Some(ids::ICO_MAIN), None);
@@ -23,10 +23,10 @@ impl MyWindow {
 
 		let new_self = Self { wnd, lbl_input, txt_input, btn_show };
 		new_self.events();
-		Ok(new_self)
+		new_self
 	}
 
-	pub fn run(&self) -> ErrResult<i32> {
+	pub fn run(&self) -> gui::RunResult<i32> {
 		self.wnd.run_main(None)
 	}
 
@@ -34,15 +34,15 @@ impl MyWindow {
 		self.btn_show.on().bn_clicked({
 			let self2 = self.clone();
 			move || {
-				let input_text = self2.txt_input.text()?;
+				let input_text = self2.txt_input.text();
 
 				let my_modal = MyModal::new(&self2.wnd, &input_text);
-				let returned_text = my_modal.show()?;
+				let returned_text = my_modal.show();
 
 				if let Some(text) = &returned_text {
 					// If user clicked OK on the modal, a text is returned,
 					// so we replace our current text with the new one.
-					self2.txt_input.set_text(text)?;
+					self2.txt_input.set_text(text);
 				}
 				Ok(())
 			}

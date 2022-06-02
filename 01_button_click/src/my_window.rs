@@ -1,5 +1,4 @@
-use winsafe::{prelude::*, gui};
-use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, gui, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -8,13 +7,11 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> ErrResult<MyWindow> {
-		let hinstance = HINSTANCE::GetModuleHandle(None)?; // handle to application instance
-
+	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new( // instantiate the window manager
 			gui::WindowMainOpts {
 				title: "My window title".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101))?, // load icon from resource ID 101
+				class_icon: gui::Icon::Id(101), // load icon from resource ID 101
 				size: SIZE::new(300, 150),
 				..Default::default() // leave all other options as default
 			},
@@ -31,10 +28,10 @@ impl MyWindow {
 
 		let new_self = Self { wnd, btn_hello };
 		new_self.events(); // attach our events
-		Ok(new_self)
+		new_self
 	}
 
-	pub fn run(&self) -> ErrResult<i32> {
+	pub fn run(&self) -> gui::RunResult<i32> {
 		self.wnd.run_main(None) // simply let the window manager do the hard work
 	}
 

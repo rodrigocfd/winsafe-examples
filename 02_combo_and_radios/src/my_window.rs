@@ -1,5 +1,4 @@
-use winsafe::{prelude::*, gui};
-use winsafe::{ErrResult, HINSTANCE, IdIdiStr, POINT, SIZE};
+use winsafe::{prelude::*, gui, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -9,13 +8,11 @@ pub struct MyWindow {
 }
 
 impl MyWindow {
-	pub fn new() -> ErrResult<MyWindow> {
-		let hinstance = HINSTANCE::GetModuleHandle(None)?;
-
+	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
 				title: "Combo and radios".to_owned(),
-				class_icon: hinstance.LoadIcon(IdIdiStr::Id(101))?,
+				class_icon: gui::Icon::Id(101),
 				size: SIZE::new(300, 150),
 				..Default::default()
 			},
@@ -52,10 +49,10 @@ impl MyWindow {
 
 		let new_self = Self { wnd, cmb_cities, rad_seas };
 		new_self.events();
-		Ok(new_self)
+		new_self
 	}
 
-	pub fn run(&self) -> ErrResult<i32> {
+	pub fn run(&self) -> gui::RunResult<i32> {
 		self.wnd.run_main(None)
 	}
 
@@ -63,7 +60,7 @@ impl MyWindow {
 		self.wnd.on().wm_create({ // happens once, right after the window is created
 			let self2 = self.clone();
 			move |_| {
-				self2.cmb_cities.items().add(&["Paris", "Madrid", "Lisbon", "Rome"])?;
+				self2.cmb_cities.items().add(&["Paris", "Madrid", "Lisbon", "Rome"]);
 				self2.rad_seas[1].select(true); // second radio initially selected
 				Ok(0)
 			}
@@ -72,7 +69,7 @@ impl MyWindow {
 		self.cmb_cities.on().cbn_sel_change({ // combo item is selected
 			let self2 = self.clone();
 			move || {
-				if let Some(the_city) = self2.cmb_cities.items().selected_text()? {
+				if let Some(the_city) = self2.cmb_cities.items().selected_text() {
 					self2.wnd.hwnd().SetWindowText(&the_city)?;
 				}
 				Ok(())
