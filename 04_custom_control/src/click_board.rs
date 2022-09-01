@@ -1,13 +1,13 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use winsafe::{prelude::*, co, gui, ErrResult, PAINTSTRUCT, POINT, SIZE};
+use winsafe::{prelude::*, co, gui, AnyResult, PAINTSTRUCT, POINT, SIZE};
 
 #[derive(Clone)]
 pub struct ClickBoard {
 	wnd:      gui::WindowControl,
 	points:   Rc<RefCell<Vec<POINT>>>,
-	fn_click: Rc<RefCell<Option<Box<dyn Fn(usize) -> ErrResult<()>>>>>, // click callback
+	fn_click: Rc<RefCell<Option<Box<dyn Fn(usize) -> AnyResult<()>>>>>, // click callback
 }
 
 impl ClickBoard {
@@ -34,7 +34,7 @@ impl ClickBoard {
 	}
 
 	pub fn on_click<F>(&mut self, func: F)
-		where F: Fn(usize) -> ErrResult<()> + 'static,
+		where F: Fn(usize) -> AnyResult<()> + 'static,
 	{
 		*self.fn_click.borrow_mut() = Some(Box::new(func)); // store user callback
 	}

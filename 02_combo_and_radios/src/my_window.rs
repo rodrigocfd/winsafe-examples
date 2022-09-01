@@ -52,7 +52,7 @@ impl MyWindow {
 		new_self
 	}
 
-	pub fn run(&self) -> gui::RunResult<i32> {
+	pub fn run(&self) -> gui::MsgResult<i32> {
 		self.wnd.run_main(None)
 	}
 

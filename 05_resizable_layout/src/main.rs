@@ -2,7 +2,7 @@
 
 mod my_window;
 
-use winsafe::{prelude::*, co, ErrResult, HWND};
+use winsafe::{prelude::*, co, AnyResult, HWND};
 use my_window::MyWindow;
 
 fn main() {
@@ -12,7 +12,7 @@ fn main() {
 	}
 }
 
-fn run_app() -> ErrResult<i32> {
+fn run_app() -> AnyResult<i32> {
 	MyWindow::new()
 		.run()
 		.map_err(|err| err.into())

@@ -9,7 +9,7 @@ mod wnd_tracker_funcs;
 pub struct WndTracker {
 	wnd:          gui::WindowControl,
 	position_pct: Rc<Cell<f32>>, // 0 to 1
-	click_cb:     Rc<RefCell<Option<Box<dyn Fn(f32) -> w::ErrResult<()>>>>>,
-	space_cb:     Rc<RefCell<Option<Box<dyn Fn() -> w::ErrResult<()>>>>>,
-	arrows_cb:    Rc<RefCell<Option<Box<dyn Fn(co::VK) -> w::ErrResult<()>>>>>,
+	click_cb:     Rc<RefCell<Option<Box<dyn Fn(f32) -> w::AnyResult<()>>>>>,
+	space_cb:     Rc<RefCell<Option<Box<dyn Fn() -> w::AnyResult<()>>>>>,
+	arrows_cb:    Rc<RefCell<Option<Box<dyn Fn(co::VK) -> w::AnyResult<()>>>>>,
 }

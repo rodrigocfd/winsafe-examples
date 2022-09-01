@@ -36,7 +36,7 @@ impl WndMain {
 		new_self
 	}
 
-	fn build_menu() -> w::ErrResult<(w::HMENU, w::HACCEL)> {
+	fn build_menu() -> w::AnyResult<(w::HMENU, w::HACCEL)> {
 		// Create file submenu.
 		let file_submenu = w::HMENU::CreatePopupMenu()?;
 
@@ -65,7 +65,7 @@ impl WndMain {
 		Ok((main_menu, accel_table))
 	}
 
-	pub fn run(&self) -> gui::RunResult<i32> {
+	pub fn run(&self) -> gui::MsgResult<i32> {
 		self.wnd.run_main(None)
 	}
 }

@@ -30,7 +30,7 @@ impl WndVideo {
 		new_self
 	}
 
-	pub fn unload(&self) -> w::ErrResult<()> {
+	pub fn unload(&self) -> w::AnyResult<()> {
 		if let Some(com_objs) = self.com_objs.try_borrow()?.as_ref() {
 			com_objs.media_ctrl.Stop()?;
 		}
@@ -38,7 +38,7 @@ impl WndVideo {
 		Ok(())
 	}
 
-	pub fn load(&self, video_path: &str) -> w::ErrResult<()> {
+	pub fn load(&self, video_path: &str) -> w::AnyResult<()> {
 		self.unload()?;
 
 		let graph_builder = w::CoCreateInstance::<w::IGraphBuilder>(
@@ -80,14 +80,14 @@ impl WndVideo {
 		Ok(())
 	}
 
-	pub fn is_running(&self) -> w::ErrResult<bool> {
+	pub fn is_running(&self) -> w::AnyResult<bool> {
 		Ok(match self.com_objs.try_borrow()?.as_ref() {
 			Some(com_ojbs) => com_ojbs.media_ctrl.GetState(None)? == co::FILTER_STATE::Running,
 			None => false,
 		})
 	}
 
-	pub fn play_pause(&self) -> w::ErrResult<()> {
+	pub fn play_pause(&self) -> w::AnyResult<()> {
 		if let Some(com_objs) = self.com_objs.try_borrow()?.as_ref() {
 			if self.is_running()? {
 				com_objs.media_ctrl.Pause()?;
@@ -98,14 +98,14 @@ impl WndVideo {
 		Ok(())
 	}
 
-	pub fn pause(&self) -> w::ErrResult<()> {
+	pub fn pause(&self) -> w::AnyResult<()> {
 		if let Some(com_objs) = self.com_objs.try_borrow()?.as_ref() {
 			com_objs.media_ctrl.Pause()?;
 		}
 		Ok(())
 	}
 
-	pub fn times(&self) -> w::ErrResult<Option<(i64, i64)>> {
+	pub fn times(&self) -> w::AnyResult<Option<(i64, i64)>> {
 		if let Some(com_objs) = self.com_objs.try_borrow()?.as_ref() {
 			Ok(Some( // originally in 100 nanoseconds; now in milliseconds
 				(com_objs.media_seek.GetCurrentPosition()? / 10_000,
@@ -116,7 +116,7 @@ impl WndVideo {
 		}
 	}
 
-	pub fn set_pos(&self, ms: i64) -> w::ErrResult<()> {
+	pub fn set_pos(&self, ms: i64) -> w::AnyResult<()> {
 		if let Some(com_objs) = self.com_objs.try_borrow_mut()?.as_ref() {
 			com_objs.media_seek.SetPositions(
 				ms * 10_000, co::SEEKING_FLAGS::AbsolutePositioning,
@@ -126,7 +126,7 @@ impl WndVideo {
 		Ok(())
 	}
 
-	pub fn seek_forward(&self, ms_diff: i64) -> w::ErrResult<()> {
+	pub fn seek_forward(&self, ms_diff: i64) -> w::AnyResult<()> {
 		if let Some((ms_pos, ms_tot)) = self.times()? {
 			self.set_pos(if ms_pos + ms_diff >= ms_tot {
 				ms_tot - 1 // never go beyond max
@@ -137,7 +137,7 @@ impl WndVideo {
 		Ok(())
 	}
 
-	pub fn seek_backwards(&self, ms_diff: i64) -> w::ErrResult<()> {
+	pub fn seek_backwards(&self, ms_diff: i64) -> w::AnyResult<()> {
 		if let Some((ms_pos, _)) = self.times()? {
 			self.set_pos(if ms_diff > ms_pos {
 				0 // never go before zero
