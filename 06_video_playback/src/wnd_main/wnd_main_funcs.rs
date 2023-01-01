@@ -50,7 +50,7 @@ impl WndMain {
 		let main_menu = w::HMENU::CreateMenu()?;
 
 		main_menu.AppendMenuEnum(&[
-			w::MenuEnum::Submenu(file_submenu, "&File"),
+			w::MenuEnum::Submenu(&file_submenu, "&File"),
 		])?;
 
 		// Create accelerator table.

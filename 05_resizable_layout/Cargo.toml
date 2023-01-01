@@ -1,7 +1,7 @@
 [package]
 name = "resizable-layout"
 version = "1.0.0"
-authors = ["Rodrigo Cesar de Freitas Dias <rcesar@gmail.com>"]
+authors = ["Rodrigo César de Freitas Dias <rcesar@gmail.com>"]
 edition = "2021"
 
 [profile.release]
@@ -9,4 +9,4 @@ lto = true
 codegen-units = 1
 
 [dependencies]
-winsafe = { version = "0.0.11", features = ["gui"] }
+winsafe = { version = "0.0.12", features = ["gui"] }

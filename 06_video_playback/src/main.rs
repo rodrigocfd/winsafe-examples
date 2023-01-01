@@ -10,7 +10,7 @@ mod wnd_video;
 fn main() {
 	if let Err(e) = make_it_happen() {
 		w::task_dlg::error(
-			w::HWND::NULL, "Unhandled error", None, &e.to_string())
+			&w::HWND::NULL, "Unhandled error", None, &e.to_string())
 			.unwrap();
 	}
 }

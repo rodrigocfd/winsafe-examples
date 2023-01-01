@@ -55,40 +55,32 @@ impl MyModal {
 	fn events(&self) {
 		// This event is fired right after the window is created,
 		// and right before it appears on the screen.
-		self.wnd.on().wm_init_dialog({
-			let self2 = self.clone();
-			move |_| {
-				self2.txt_incoming.set_text(&self2.input_val.try_borrow()?);
-				Ok(true)
-			}
+		let self2 = self.clone();
+		self.wnd.on().wm_init_dialog(move |_| {
+			self2.txt_incoming.set_text(&self2.input_val.try_borrow()?);
+			Ok(true)
 		});
 
-		self.btn_ok.on().bn_clicked({
-			let self2 = self.clone();
-			move || {
-				// Save the text typed by the user.
-				*self2.return_val.try_borrow_mut()? = Some(self2.txt_return.text());
-				self2.wnd.hwnd().EndDialog(0)?;
-				Ok(())
-			}
+		let self2 = self.clone();
+		self.btn_ok.on().bn_clicked(move || {
+			// Save the text typed by the user.
+			*self2.return_val.try_borrow_mut()? = Some(self2.txt_return.text());
+			self2.wnd.hwnd().EndDialog(0)?;
+			Ok(())
 		});
 
-		self.btn_cancel.on().bn_clicked({
-			let self2 = self.clone();
-			move || {
-				*self2.return_val.try_borrow_mut()? = None; // no return text
-				self2.wnd.hwnd().EndDialog(0)?;
-				Ok(())
-			}
+		let self2 = self.clone();
+		self.btn_cancel.on().bn_clicked(move || {
+			*self2.return_val.try_borrow_mut()? = None; // no return text
+			self2.wnd.hwnd().EndDialog(0)?;
+			Ok(())
 		});
 
-		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL.into(), { // close on ESC key
-			let self2 = self.clone();
-			move || {
-				*self2.return_val.try_borrow_mut()? = None; // no return text
-				self2.wnd.hwnd().EndDialog(0)?;
-				Ok(())
-			}
+		let self2 = self.clone();
+		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL.into(), move || { // ESC key
+			*self2.return_val.try_borrow_mut()? = None; // no return text
+			self2.wnd.hwnd().EndDialog(0)?; // close window
+			Ok(())
 		});
 	}
 }
