@@ -2,17 +2,18 @@
 
 mod my_window;
 
-use winsafe::{prelude::*, co, AnyResult, HWND};
+use winsafe::{prelude::*, self as w};
 use my_window::MyWindow;
 
 fn main() {
 	if let Err(e) = run_app() {
-		HWND::NULL.MessageBox(
-			&e.to_string(), "Uncaught error", co::MB::ICONERROR).unwrap();
+		w::task_dlg::error(
+			&w::HWND::NULL, "Unhandled error", None, &e.to_string())
+			.unwrap();
 	}
 }
 
-fn run_app() -> AnyResult<i32> {
+fn run_app() -> w::AnyResult<i32> {
 	MyWindow::new()
 		.run()
 		.map_err(|err| err.into())
