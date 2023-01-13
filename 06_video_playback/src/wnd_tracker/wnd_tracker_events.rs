@@ -61,8 +61,7 @@ impl WndTracker {
 
 		let space_cb = self.space_cb.clone();
 		self.wnd.on().wm_key_down(move |p| {
-			let key = co::VK::from(p.char_code as u16);
-			if key == co::VK::SPACE {
+			if p.char_code == co::VK::SPACE {
 				if let Some(space_cb) = space_cb.try_borrow()?.as_ref() {
 					space_cb()?;
 				}

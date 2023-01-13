@@ -51,8 +51,7 @@ impl WndVideo {
 
 		let self2 = self.clone();
 		self.wnd.on().wm_key_down(move |p| {
-			let key = co::VK::from(p.char_code as u16);
-			if key == co::VK::SPACE {
+			if p.char_code == co::VK::SPACE {
 				self2.play_pause()?;
 			}
 			Ok(())
