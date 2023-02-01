@@ -14,7 +14,7 @@ impl MyWindow {
 			gui::WindowMainOpts {
 				title: "Custom control".to_owned(),
 				class_icon: gui::Icon::Id(101),
-				size: w::SIZE::new(300, 150),
+				size: (300, 150),
 				style: gui::WindowMainOpts::default().style | co::WS::MINIMIZEBOX, // add a minimize button
 				..Default::default()
 			},
@@ -22,8 +22,8 @@ impl MyWindow {
 
 		let click_board = ClickBoard::new(
 			&wnd,
-			w::POINT::new(10, 10),
-			w::SIZE::new(280, 130),
+			(10, 10),
+			(280, 130),
 		);
 
 		let mut new_self = Self { wnd, click_board };
@@ -31,7 +31,7 @@ impl MyWindow {
 		new_self
 	}
 
-	pub fn run(&self) -> gui::MsgResult<i32> {
+	pub fn run(&self) -> w::AnyResult<i32> {
 		self.wnd.run_main(None)
 	}
 
@@ -39,7 +39,7 @@ impl MyWindow {
 		self.click_board.on_click({ // click event of our custom control
 			let wnd = self.wnd.clone();
 			move |num_points| {
-				wnd.hwnd().SetWindowText(&format!("Points: {}", num_points))?;
+				wnd.set_text(&format!("Points: {}", num_points));
 				Ok(())
 			}
 		});

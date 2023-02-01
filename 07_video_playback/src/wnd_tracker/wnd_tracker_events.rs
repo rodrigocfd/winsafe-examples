@@ -1,4 +1,3 @@
-use defer_lite::defer;
 use winsafe::{prelude::*, self as w, co};
 
 use super::WndTracker;
@@ -19,14 +18,10 @@ impl WndTracker {
 			});
 
 			let hpen = w::HPEN::CreatePen(co::PS::SOLID, 1, color)?;
-			defer! { hpen.DeleteObject().unwrap(); }
-			let hpen_def = hdc.SelectObject(&hpen)?;
-			defer! { hdc.SelectObject(&hpen_def).unwrap(); }
+			let _hpen_old = hdc.SelectObject(&*hpen)?;
 
 			let hbrush = w::HBRUSH::CreateSolidBrush(color)?;
-			defer! { hbrush.DeleteObject().unwrap(); }
-			let hbrush_def = hdc.SelectObject(&hbrush)?;
-			defer! { hdc.SelectObject(&hbrush_def).unwrap(); }
+			let _hbrush_old = hdc.SelectObject(&*hbrush)?;
 
 			let rc = self2.wnd.hwnd().GetClientRect()?;
 			let pos = rc.right as f32 * self2.position_pct.get();
@@ -61,7 +56,7 @@ impl WndTracker {
 
 		let space_cb = self.space_cb.clone();
 		self.wnd.on().wm_key_down(move |p| {
-			if p.char_code == co::VK::SPACE {
+			if p.vkey_code == co::VK::SPACE {
 				if let Some(space_cb) = space_cb.try_borrow()?.as_ref() {
 					space_cb()?;
 				}

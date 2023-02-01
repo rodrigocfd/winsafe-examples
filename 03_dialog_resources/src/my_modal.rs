@@ -46,7 +46,7 @@ impl MyModal {
 	}
 
 	pub fn show(&self) -> Option<String> {
-		self.wnd.show_modal();
+		self.wnd.show_modal().unwrap();
 		self.return_val.borrow()
 			.as_ref()
 			.map(|s| s.clone()) // return the text typed in the modal, if any
@@ -79,7 +79,7 @@ impl MyModal {
 		let self2 = self.clone();
 		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL.into(), move || { // ESC key
 			*self2.return_val.try_borrow_mut()? = None; // no return text
-			self2.wnd.hwnd().EndDialog(0)?; // close window
+			self2.wnd.hwnd().EndDialog(0)?;
 			Ok(())
 		});
 	}

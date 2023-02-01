@@ -1,4 +1,4 @@
-# 06 Video playback
+# 07 Video playback
 
 This example is a video playback application which uses [DirectShow](https://docs.microsoft.com/en-us/windows/win32/directshow/directshow), a [COM](https://docs.microsoft.com/en-us/windows/win32/com/component-object-model--com--portal)-based API.
 
@@ -19,7 +19,7 @@ The following keyboard shortcuts are implemented:
 * Space – play or pause;
 * Esc – close the application.
 
-![Example 06](screen.gif)
+![Example 07](screen.gif)
 
 To compile and run:
 

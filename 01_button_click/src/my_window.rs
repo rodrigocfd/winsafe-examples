@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, gui, POINT, SIZE};
+use winsafe::{prelude::*, gui, AnyResult};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -12,7 +12,7 @@ impl MyWindow {
 			gui::WindowMainOpts {
 				title: "My window title".to_owned(),
 				class_icon: gui::Icon::Id(101), // load icon from resource ID 101
-				size: SIZE::new(300, 150),
+				size: (300, 150),
 				..Default::default() // leave all other options as default
 			},
 		);
@@ -21,7 +21,7 @@ impl MyWindow {
 			&wnd, // the window manager is the parent of our button
 			gui::ButtonOpts {
 				text: "&Click me".to_owned(),
-				position: POINT::new(20, 20),
+				position: (20, 20),
 				..Default::default()
 			},
 		);
@@ -31,14 +31,14 @@ impl MyWindow {
 		new_self
 	}
 
-	pub fn run(&self) -> gui::MsgResult<i32> {
+	pub fn run(&self) -> AnyResult<i32> {
 		self.wnd.run_main(None) // simply let the window manager do the hard work
 	}
 
 	fn events(&self) {
-		let self2 = self.wnd.clone(); // clone so it can be passed into the closure
-		self.btn_hello.on().bn_clicked(move || {
-			self2.hwnd().SetWindowText("Hello, world!")?;
+		let self2 = self.clone();
+		self.btn_hello.on().bn_clicked(move || { // button click event
+			self2.wnd.hwnd().SetWindowText("Hello, world!")?;
 			Ok(())
 		});
 	}

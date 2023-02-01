@@ -17,11 +17,12 @@ Note that the order can change with new examples being added.
 | Example | Screenshot |
 | - | - |
 | 01 [Button click](01_button_click/) | ![Example 01](01_button_click/screen.gif) |
-| 02 [Combo and radios](02_combo_and_radios/) | ![Example 02](02_combo_and_radios/screen.gif) |
+| 02 [Native controls](02_native_controls/) | ![Example 02](02_native_controls/screen.gif) |
 | 03 [Dialog resources](03_dialog_resources/) | ![Example 03](03_dialog_resources/screen.gif) |
 | 04 [Custom control](04_custom_control/) | ![Example 04](04_custom_control/screen.gif) |
 | 05 [Resizable layout](05_resizable_layout/) | ![Example 05](05_resizable_layout/screen.gif) |
-| 06 [Video playback](06_video_playback/) | ![Example 06](06_video_playback/screen.gif) |
+| 06 [Tabs](06_tabs/) | ![Example 06](06_tabs/screen.gif) |
+| 07 [Video playback](07_video_playback/) | ![Example 07](07_video_playback/screen.gif) |
 
 ## License
 

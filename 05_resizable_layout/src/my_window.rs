@@ -14,7 +14,7 @@ impl MyWindow {
 			gui::WindowMainOpts {
 				title: "Resizable layout".to_owned(),
 				class_icon: gui::Icon::Id(101),
-				size: w::SIZE::new(300, 150),
+				size: (300, 150),
 				style: gui::WindowMainOpts::default().style |
 					co::WS::MINIMIZEBOX | co::WS::MAXIMIZEBOX | co::WS::SIZEBOX, // window can be resized
 				..Default::default()
@@ -24,8 +24,8 @@ impl MyWindow {
 		let lst = gui::ListView::new(
 			&wnd,
 			gui::ListViewOpts {
-				position: w::POINT::new(10, 10),
-				size: w::SIZE::new(280, 100),
+				position: (10, 10),
+				size: (280, 100),
 				horz_resize: gui::Horz::Resize, // resize horz/vert with parent
 				vert_resize: gui::Vert::Resize,
 				..Default::default()
@@ -35,7 +35,7 @@ impl MyWindow {
 		let txt = gui::Edit::new(
 			&wnd,
 			gui::EditOpts {
-				position: w::POINT::new(10, 120),
+				position: (10, 120),
 				width: 180,
 				horz_resize: gui::Horz::Resize, // resize horizontally with parent
 				vert_resize: gui::Vert::Repos,  // move anchored at parent bottom
@@ -47,7 +47,7 @@ impl MyWindow {
 			&wnd,
 			gui::ButtonOpts {
 				text: "&Button".to_owned(),
-				position: w::POINT::new(200, 120),
+				position: (200, 120),
 				horz_resize: gui::Horz::Repos, // move anchored at parent right/bottom
 				vert_resize: gui::Vert::Repos,
 				..Default::default()
@@ -59,7 +59,7 @@ impl MyWindow {
 		new_self
 	}
 
-	pub fn run(&self) -> gui::MsgResult<i32> {
+	pub fn run(&self) -> w::AnyResult<i32> {
 		self.wnd.run_main(None)
 	}
 

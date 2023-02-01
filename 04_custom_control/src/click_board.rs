@@ -11,7 +11,7 @@ pub struct ClickBoard {
 }
 
 impl ClickBoard {
-	pub fn new(parent: &impl GuiParent, position: w::POINT, size: w::SIZE) -> Self {
+	pub fn new(parent: &impl GuiParent, position: (i32, i32), size: (u32, u32)) -> Self {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
@@ -58,11 +58,26 @@ impl ClickBoard {
 			// automatically at the end of the current scope.
 			let hdc = self2.wnd.hwnd().BeginPaint()?;
 
+			// CreatePen() also returns a guard, which will call DeleteObject()
+			// at the end of current scope.
+			let pen = w::HPEN::CreatePen(
+				co::PS::SOLID, 1, w::COLORREF::new(0, 0, 0xff))?; // blue color
+
+			// SelectObject() also returns a guard, which will keep the replaced
+			// GDI object and call SelectObject() again at the end of current
+			// scope. We have no use for the returned guard, but we must keep it
+			// alive, otherwise SelectObject() is called right away.
+			let _old_pen = hdc.SelectObject(&*pen);
+
 			hdc.MoveToEx(0, 0, None)?; // first drawn line starts from top left corner
 
 			for pt in self2.points.borrow().iter() {
-				hdc.LineTo(pt.x, pt.y)?;
+				hdc.LineTo(pt.x, pt.y)?; // draw all lines
 			}
+
+			// SelectObject()...
+			// DeleteObject()...
+			// EndPaint()... all called here, automatically by the guards
 
 			Ok(())
 		});

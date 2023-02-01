@@ -16,18 +16,16 @@ impl WndMain {
 				style: gui::WindowMainOpts::default().style
 					| co::WS::MINIMIZEBOX | co::WS::MAXIMIZEBOX | co::WS::SIZEBOX,
 				class_icon: gui::Icon::Id(101),
-				size: w::SIZE::new(700, 400),
+				size: (700, 400),
 				menu,
-				accel_table,
+				accel_table: Some(accel_table),
 				..Default::default()
 			},
 		);
 
-		let wnd_video = WndVideo::new(&wnd,
-			ids::WND_VIDEO, w::POINT::new(0, 0), w::SIZE::new(700, 380));
+		let wnd_video = WndVideo::new(&wnd, ids::WND_VIDEO, (0, 0), (700, 380));
 
-		let wnd_tracker = WndTracker::new(&wnd,
-			ids::WND_TRACKER, w::POINT::new(0, 380), w::SIZE::new(700, 20));
+		let wnd_tracker = WndTracker::new(&wnd, ids::WND_TRACKER, (0, 380), (700, 20));
 
 		let taskbar = Rc::new(RefCell::new(None)); // taskbar object initially not loaded
 
@@ -36,7 +34,7 @@ impl WndMain {
 		new_self
 	}
 
-	fn build_menu() -> w::AnyResult<(w::HMENU, w::HACCEL)> {
+	fn build_menu() -> w::AnyResult<(w::HMENU, w::guard::DestroyAcceleratorTableGuard)> {
 		// Create file submenu.
 		let file_submenu = w::HMENU::CreatePopupMenu()?;
 
@@ -65,7 +63,7 @@ impl WndMain {
 		Ok((main_menu, accel_table))
 	}
 
-	pub fn run(&self) -> gui::MsgResult<i32> {
+	pub fn run(&self) -> w::AnyResult<i32> {
 		self.wnd.run_main(None)
 	}
 }

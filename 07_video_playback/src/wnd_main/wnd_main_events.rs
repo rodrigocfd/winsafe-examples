@@ -101,9 +101,9 @@ impl WndMain {
 		let self2 = self.clone();
 		self.wnd.on().wm_timer(1, move || { // started when a video is loaded
 			if let Some((ms_cur, ms_total)) = self2.wnd_video.times()? {
-				self2.wnd.hwnd().SetWindowText(
+				self2.wnd.set_text(
 					&format!("{} / {}", ms_to_hms(ms_cur), ms_to_hms(ms_total)),
-				)?;
+				);
 
 				if let Some(taskbar) = self2.taskbar.try_borrow()?.as_ref() {
 					taskbar.SetProgressValue(self2.wnd.hwnd(), ms_cur as _, ms_total as _)?;

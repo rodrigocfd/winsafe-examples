@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, gui};
+use winsafe::{prelude::*, gui, AnyResult};
 
 use crate::ids;
 use crate::my_modal::MyModal;
@@ -26,26 +26,24 @@ impl MyWindow {
 		new_self
 	}
 
-	pub fn run(&self) -> gui::MsgResult<i32> {
+	pub fn run(&self) -> AnyResult<i32> {
 		self.wnd.run_main(None)
 	}
 
 	fn events(&self) {
-		self.btn_show.on().bn_clicked({
-			let self2 = self.clone();
-			move || {
-				let input_text = self2.txt_input.text();
+		let self2 = self.clone();
+		self.btn_show.on().bn_clicked(move || {
+			let input_text = self2.txt_input.text();
 
-				let my_modal = MyModal::new(&self2.wnd, &input_text);
-				let returned_text = my_modal.show();
+			let my_modal = MyModal::new(&self2.wnd, &input_text);
+			let returned_text = my_modal.show();
 
-				if let Some(text) = &returned_text {
-					// If user clicked OK on the modal, a text is returned,
-					// so we replace our current text with the new one.
-					self2.txt_input.set_text(text);
-				}
-				Ok(())
+			if let Some(text) = &returned_text {
+				// If user clicked OK on the modal, a text is returned,
+				// so we replace our current text with the new one.
+				self2.txt_input.set_text(text);
 			}
+			Ok(())
 		});
 	}
 }
