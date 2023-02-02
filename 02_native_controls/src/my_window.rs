@@ -9,6 +9,7 @@ pub struct MyWindow {
 	cmb_cities: gui::ComboBox,
 	rad_seas:   gui::RadioGroup,
 	month_cal:  gui::MonthCalendar,
+	sbar:       gui::StatusBar,
 }
 
 impl MyWindow {
@@ -101,6 +102,14 @@ impl MyWindow {
 			},
 		);
 
+		let sbar = gui::StatusBar::new(
+			&wnd,
+			&[
+				gui::StatusBarPart::Proportional(1),
+				gui::StatusBarPart::Fixed(160),
+			],
+		);
+
 		let new_self = Self {
 			wnd,
 			lbl_name,
@@ -108,7 +117,8 @@ impl MyWindow {
 			chk_sleepy,
 			cmb_cities,
 			rad_seas,
-			month_cal
+			month_cal,
+			sbar,
 		};
 		new_self.events();
 		new_self
@@ -121,6 +131,8 @@ impl MyWindow {
 	fn events(&self) {
 		let self2 = self.clone();
 		self.wnd.on().wm_create(move |_| { // called once, right after the window is created
+			self2.sbar.parts().set_text(0, "This is the status bar");
+			self2.sbar.parts().set_text(1, "Hi");
 			self2.txt_name.focus();
 			Ok(0)
 		});
