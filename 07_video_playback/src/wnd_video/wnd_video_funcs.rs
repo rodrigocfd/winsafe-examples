@@ -76,6 +76,13 @@ impl WndVideo {
 		let media_ctrl = graph_builder.QueryInterface::<w::IMediaControl>()?;
 		media_ctrl.Run()?;
 
+		// let mut filter_info = w::FILTER_INFO::default();
+		// for filter in graph_builder.EnumFilters()?.iter() {
+		// 	let filter = filter?;
+		// 	filter.QueryFilterInfo(&mut filter_info)?;
+		// 	println!("Filter: {}", filter_info.achName());
+		// }
+
 		*self.com_objs.try_borrow_mut()? = Some( // finally save the COM objects
 			ComObjs { graph_builder, vmr, controller_evr, media_seek, media_ctrl },
 		);
