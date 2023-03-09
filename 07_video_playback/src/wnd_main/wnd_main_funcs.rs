@@ -56,7 +56,7 @@ impl WndMain {
 			w::ACCEL {
 				fVirt: co::ACCELF::VIRTKEY | co::ACCELF::CONTROL,
 				cmd: ids::MNU_FILE_OPEN,
-				key: co::VK::from('O' as u16),
+				key: co::VK::CHAR_O,
 			},
 		])?;
 

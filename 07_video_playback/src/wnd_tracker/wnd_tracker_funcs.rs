@@ -8,7 +8,9 @@ impl WndTracker {
 	pub fn new(
 		parent: &impl GuiParent,
 		ctrl_id: u16,
-		position: (i32, i32), size: (u32, u32)) -> Self
+		position: (i32, i32),
+		size: (u32, u32),
+	) -> Self
 	{
 		let wnd = gui::WindowControl::new(
 			parent,
@@ -34,9 +36,10 @@ impl WndTracker {
 		new_self
 	}
 
-	pub fn set_rendered_pos(&self, position_pct: f32) {
+	pub fn set_rendered_pos(&self, position_pct: f32) -> w::SysResult<()> {
 		self.position_pct.replace(position_pct);
-		self.wnd.hwnd().InvalidateRect(None, true).unwrap();
+		self.wnd.hwnd().InvalidateRect(None, true)?;
+		Ok(())
 	}
 
 	pub fn on_click<F>(&self, cb: F)

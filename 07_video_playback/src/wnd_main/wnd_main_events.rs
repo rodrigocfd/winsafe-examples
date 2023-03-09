@@ -66,7 +66,7 @@ impl WndMain {
 
 		let self2 = self.clone();
 		self.wnd_tracker.on_click(move |pct| {
-			if let Some((_, ms_total)) = self2.wnd_video.times()? {
+			if let Some((_, ms_total)) = self2.wnd_video.curpos_duration()? {
 				let ms_pos = pct * ms_total as f32;
 				self2.wnd_video.set_pos(ms_pos as _)?;
 			}
@@ -100,7 +100,7 @@ impl WndMain {
 
 		let self2 = self.clone();
 		self.wnd.on().wm_timer(1, move || { // started when a video is loaded
-			if let Some((ms_cur, ms_total)) = self2.wnd_video.times()? {
+			if let Some((ms_cur, ms_total)) = self2.wnd_video.curpos_duration()? {
 				self2.wnd.set_text(
 					&format!("{} / {}", ms_to_hms(ms_cur), ms_to_hms(ms_total)),
 				);
@@ -109,7 +109,7 @@ impl WndMain {
 					taskbar.SetProgressValue(self2.wnd.hwnd(), ms_cur as _, ms_total as _)?;
 				}
 
-				self2.wnd_tracker.set_rendered_pos(ms_cur as f32 / ms_total as f32);
+				self2.wnd_tracker.set_rendered_pos(ms_cur as f32 / ms_total as f32)?;
 			}
 			Ok(())
 		});

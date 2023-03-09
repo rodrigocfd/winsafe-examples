@@ -8,7 +8,9 @@ impl WndVideo {
 	pub fn new(
 		parent: &impl GuiParent,
 		ctrl_id: u16,
-		position: (i32, i32), size: (u32, u32)) -> Self
+		position: (i32, i32),
+		size: (u32, u32),
+	) -> Self
 	{
 		let wnd = gui::WindowControl::new(
 			parent,
@@ -58,7 +60,8 @@ impl WndVideo {
 		let get_svc = vmr.QueryInterface::<w::IMFGetService>()?;
 
 		let controller_evr = get_svc.GetService::<w::IMFVideoDisplayControl>(
-			&co::DSHOW_SERVICE::MR_VIDEO_RENDER_SERVICE)?;
+			&co::DSHOW_SERVICE::MR_VIDEO_RENDER_SERVICE,
+		)?;
 		controller_evr.SetVideoWindow(self.wnd.hwnd())?;
 		controller_evr.SetAspectRatioMode(co::MFVideoARMode::PreservePicture)?;
 
@@ -76,7 +79,6 @@ impl WndVideo {
 		*self.com_objs.try_borrow_mut()? = Some( // finally save the COM objects
 			ComObjs { graph_builder, vmr, controller_evr, media_seek, media_ctrl },
 		);
-
 		Ok(())
 	}
 
@@ -105,12 +107,11 @@ impl WndVideo {
 		Ok(())
 	}
 
-	pub fn times(&self) -> w::AnyResult<Option<(i64, i64)>> {
+	pub fn curpos_duration(&self) -> w::AnyResult<Option<(i64, i64)>> {
 		if let Some(com_objs) = self.com_objs.try_borrow()?.as_ref() {
-			Ok(Some( // originally in 100 nanoseconds; now in milliseconds
-				(com_objs.media_seek.GetCurrentPosition()? / 10_000,
-					com_objs.media_seek.GetDuration()? / 10_000),
-			))
+			let cur_pos = com_objs.media_seek.GetCurrentPosition()? / 10_000;
+			let duration = com_objs.media_seek.GetDuration()? / 10_000;
+			Ok(Some((cur_pos, duration))) // originally in 100 nanoseconds; now in milliseconds
 		} else {
 			Ok(None)
 		}
@@ -127,7 +128,7 @@ impl WndVideo {
 	}
 
 	pub fn seek_forward(&self, ms_diff: i64) -> w::AnyResult<()> {
-		if let Some((ms_pos, ms_tot)) = self.times()? {
+		if let Some((ms_pos, ms_tot)) = self.curpos_duration()? {
 			self.set_pos(if ms_pos + ms_diff >= ms_tot {
 				ms_tot - 1 // never go beyond max
 			} else {
@@ -138,7 +139,7 @@ impl WndVideo {
 	}
 
 	pub fn seek_backwards(&self, ms_diff: i64) -> w::AnyResult<()> {
-		if let Some((ms_pos, _)) = self.times()? {
+		if let Some((ms_pos, _)) = self.curpos_duration()? {
 			self.set_pos(if ms_diff > ms_pos {
 				0 // never go before zero
 			} else {
