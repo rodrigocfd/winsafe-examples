@@ -1,16 +1,24 @@
 //! IDs of the resources defined in "resources\example03.res".
 
-pub const ICO_MAIN: u16 = 101;
+use winsafe::seq_ids;
 
-pub const DLG_MAIN:  u16 = 1000;
-pub const LBL_INPUT: u16 = 1001;
-pub const TXT_INPUT: u16 = 1002;
-pub const BTN_SHOW:  u16 = 1003;
+seq_ids! {
+	ICO_MAIN = 101;
+}
 
-pub const DLG_MODAL:    u16 = 2000;
-pub const LBL_INCOMING: u16 = 2001;
-pub const TXT_INCOMING: u16 = 2002;
-pub const LBL_RETURN:   u16 = 2003;
-pub const TXT_RETURN:   u16 = 2004;
-pub const BTN_OK:       u16 = 2005;
-pub const BTN_CANCEL:   u16 = 2006;
+seq_ids! {
+	DLG_MAIN = 1000;
+	LBL_INPUT
+	TXT_INPUT
+	BTN_SHOW
+}
+
+seq_ids! {
+	DLG_MODAL = 2000;
+	LBL_INCOMING
+	TXT_INCOMING
+	LBL_RETURN
+	TXT_RETURN
+	BTN_OK
+	BTN_CANCEL
+}
