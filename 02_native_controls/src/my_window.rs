@@ -131,8 +131,8 @@ impl MyWindow {
 	fn events(&self) {
 		let self2 = self.clone();
 		self.wnd.on().wm_create(move |_| { // called once, right after the window is created
-			self2.sbar.parts().set_text(0, "This is the status bar");
-			self2.sbar.parts().set_text(1, "Hi");
+			self2.sbar.parts().get(0).set_text("This is the status bar");
+			self2.sbar.parts().get(1).set_text("Hi");
 			self2.txt_name.focus();
 			Ok(0)
 		});
