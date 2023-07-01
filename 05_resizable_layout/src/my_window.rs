@@ -26,8 +26,8 @@ impl MyWindow {
 			gui::ListViewOpts {
 				position: (10, 10),
 				size: (280, 100),
-				horz_resize: gui::Horz::Resize, // resize horz/vert with parent
-				vert_resize: gui::Vert::Resize,
+				// Resize horizontally and vertically together with parent window.
+				resize_behavior: (gui::Horz::Resize, gui::Vert::Resize),
 				..Default::default()
 			},
 		);
@@ -37,8 +37,9 @@ impl MyWindow {
 			gui::EditOpts {
 				position: (10, 120),
 				width: 180,
-				horz_resize: gui::Horz::Resize, // resize horizontally with parent
-				vert_resize: gui::Vert::Repos,  // move anchored at parent bottom
+				// Resize horizontally together with parent window.
+				// Move anchored at bottom as parent window resizes.
+				resize_behavior: (gui::Horz::Resize, gui::Vert::Repos),
 				..Default::default()
 			},
 		);
@@ -48,8 +49,8 @@ impl MyWindow {
 			gui::ButtonOpts {
 				text: "&Button".to_owned(),
 				position: (200, 120),
-				horz_resize: gui::Horz::Repos, // move anchored at parent right/bottom
-				vert_resize: gui::Vert::Repos,
+				// Move anchored at right/bottom as parent window resizes.
+				resize_behavior: (gui::Horz::Repos, gui::Vert::Repos),
 				..Default::default()
 			},
 		);

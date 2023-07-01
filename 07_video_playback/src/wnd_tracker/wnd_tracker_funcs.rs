@@ -18,8 +18,7 @@ impl WndTracker {
 				ctrl_id,
 				position,
 				size,
-				horz_resize: gui::Horz::Resize,
-				vert_resize: gui::Vert::Repos,
+				resize_behavior: (gui::Horz::Resize, gui::Vert::Repos),
 				class_cursor: gui::Cursor::Idc(co::IDC::HAND),
 				..Default::default()
 			},

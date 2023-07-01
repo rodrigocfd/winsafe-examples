@@ -10,3 +10,5 @@ seq_ids! {
 seq_ids! {
 	MNU_FILE_OPEN = 2000;
 }
+
+pub const TIMER_ID: usize = 1;

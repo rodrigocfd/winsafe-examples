@@ -18,8 +18,7 @@ impl WndVideo {
 				ctrl_id,
 				position,
 				size,
-				horz_resize: gui::Horz::Resize,
-				vert_resize: gui::Vert::Resize,
+				resize_behavior: (gui::Horz::Resize, gui::Vert::Resize),
 				// ex_style: gui::WindowControlOpts::default().ex_style | co::WS_EX::CLIENTEDGE,
 				..Default::default()
 			},

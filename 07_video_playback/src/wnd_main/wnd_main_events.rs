@@ -58,8 +58,8 @@ impl WndMain {
 					);
 				}
 
-				self2.wnd.hwnd().KillTimer(1).ok(); // kill any previous timer
-				self2.wnd.hwnd().SetTimer(1, 100, None)?; // will fire WM_TIMER each 100 ms
+				self2.wnd.hwnd().KillTimer(ids::TIMER_ID).ok(); // kill any previous timer
+				self2.wnd.hwnd().SetTimer(ids::TIMER_ID, 100, None)?; // will fire WM_TIMER each 100 ms
 			}
 			Ok(())
 		});
@@ -99,7 +99,7 @@ impl WndMain {
 		});
 
 		let self2 = self.clone();
-		self.wnd.on().wm_timer(1, move || { // started when a video is loaded
+		self.wnd.on().wm_timer(ids::TIMER_ID, move || { // started when a video is loaded
 			if let Some((ms_cur, ms_total)) = self2.wnd_video.curpos_duration()? {
 				self2.wnd.set_text(
 					&format!("{} / {}", ms_to_hms(ms_cur), ms_to_hms(ms_total)),
