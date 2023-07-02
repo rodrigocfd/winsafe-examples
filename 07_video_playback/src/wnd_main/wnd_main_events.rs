@@ -38,8 +38,7 @@ impl WndMain {
 				("MP4 video files", "*.mp4"),
 				("All files", "*.*"),
 			])?;
-
-			fileo.SetFileTypeIndex(0)?;
+			fileo.SetFileTypeIndex(1)?;
 
 			if fileo.Show(self2.wnd.hwnd())? {
 				self2.wnd_video.load(
