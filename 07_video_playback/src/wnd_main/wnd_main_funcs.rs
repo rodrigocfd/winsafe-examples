@@ -38,17 +38,17 @@ impl WndMain {
 		// Create file submenu.
 		let file_submenu = w::HMENU::CreatePopupMenu()?;
 
-		file_submenu.AppendMenuEnum(&[
-			w::MenuEnum::Entry(ids::MNU_FILE_OPEN, "&Open video...\tCtrl+O"),
-			w::MenuEnum::Separator,
-			w::MenuEnum::Entry(co::DLGID::CANCEL.into(), "E&xit"),
+		file_submenu.append_item(&[
+			w::MenuItem::Entry(ids::MNU_FILE_OPEN, "&Open video...\tCtrl+O"),
+			w::MenuItem::Separator,
+			w::MenuItem::Entry(co::DLGID::CANCEL.into(), "E&xit"),
 		])?;
 
 		// Create main menu.
 		let main_menu = w::HMENU::CreateMenu()?;
 
-		main_menu.AppendMenuEnum(&[
-			w::MenuEnum::Submenu(&file_submenu, "&File"),
+		main_menu.append_item(&[
+			w::MenuItem::Submenu(&file_submenu, "&File"),
 		])?;
 
 		// Create accelerator table.

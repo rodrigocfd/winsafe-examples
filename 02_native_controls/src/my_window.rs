@@ -105,8 +105,8 @@ impl MyWindow {
 		let sbar = gui::StatusBar::new(
 			&wnd,
 			&[
-				gui::StatusBarPart::Proportional(1),
-				gui::StatusBarPart::Fixed(160),
+				gui::SbPart::Proportional(1),
+				gui::SbPart::Fixed(160),
 			],
 		);
 

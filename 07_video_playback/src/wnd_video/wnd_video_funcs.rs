@@ -59,7 +59,7 @@ impl WndVideo {
 		let get_svc = vmr.QueryInterface::<w::IMFGetService>()?;
 
 		let controller_evr = get_svc.GetService::<w::IMFVideoDisplayControl>(
-			&co::DSHOW_SERVICE::MR_VIDEO_RENDER_SERVICE,
+			&co::MF_SERVICE::MR_VIDEO_RENDER_SERVICE,
 		)?;
 		controller_evr.SetVideoWindow(self.wnd.hwnd())?;
 		controller_evr.SetAspectRatioMode(co::MFVideoARMode::PreservePicture)?;
