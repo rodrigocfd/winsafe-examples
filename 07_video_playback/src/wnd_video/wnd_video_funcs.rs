@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use winsafe::{prelude::*, self as w, co, gui};
+use winsafe::{self as w, prelude::*, co, gui};
 
 use super::{ComObjs, WndVideo};
 

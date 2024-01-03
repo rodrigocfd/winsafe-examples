@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, self as w, co};
+use winsafe::{self as w, prelude::*, co};
 
 use super::WndTracker;
 

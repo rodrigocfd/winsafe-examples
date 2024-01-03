@@ -9,4 +9,4 @@ lto = true
 codegen-units = 1
 
 [dependencies]
-winsafe = { version = "0.0.18", features = ["dshow", "gui", "mf"] }
+winsafe = { version = "0.0.19", features = ["dshow", "gui", "mf"] }

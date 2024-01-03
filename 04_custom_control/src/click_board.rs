@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use winsafe::{prelude::*, self as w, gui, co};
+use winsafe::{self as w, prelude::*, gui, co};
 
 #[derive(Clone)]
 pub struct ClickBoard {

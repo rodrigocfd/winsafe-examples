@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, self as w, gui, co};
+use winsafe::{self as w, prelude::*, gui, co};
 
 use crate::tab_container1::TabContainer1;
 use crate::tab_container2::TabContainer2;

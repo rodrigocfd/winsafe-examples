@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, self as w, gui, co};
+use winsafe::{self as w, prelude::*, gui, co};
 
 #[derive(Clone)]
 pub struct TabContainer1 {
@@ -49,8 +49,14 @@ impl TabContainer1 {
 	fn events(&self) {
 		let self2 = self.clone();
 		self.btn.on().bn_clicked(move || {
-			w::task_dlg::info(
-				&self2.wnd.hwnd().GetParent()?, "Hello", None, &self2.txt.text())?;
+			self2.wnd.hwnd().GetParent()?.TaskDialog(
+				None,
+				Some("Hello"),
+				None,
+				Some(&self2.txt.text()),
+				co::TDCBF::OK,
+				w::IconRes::Info,
+			)?;
 			Ok(())
 		});
 	}

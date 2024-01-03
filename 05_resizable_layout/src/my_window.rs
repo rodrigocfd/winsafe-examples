@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, self as w, gui, co};
+use winsafe::{self as w, prelude::*, gui, co};
 
 #[derive(Clone)]
 pub struct MyWindow {
