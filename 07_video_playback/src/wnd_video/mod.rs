@@ -12,9 +12,9 @@ pub struct WndVideo {
 }
 
 struct ComObjs {
-	graph_builder:  w::IGraphBuilder,
-	vmr:            w::IBaseFilter,
-	controller_evr: w::IMFVideoDisplayControl,
+	media_ctrl:     w::IMediaControl, // drop order is important
 	media_seek:     w::IMediaSeeking,
-	media_ctrl:     w::IMediaControl,
+	controller_evr: w::IMFVideoDisplayControl,
+	vmr:            w::IBaseFilter,
+	graph_builder:  w::IGraphBuilder,
 }
