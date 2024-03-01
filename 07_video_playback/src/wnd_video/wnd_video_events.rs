@@ -5,8 +5,10 @@ use super::WndVideo;
 impl WndVideo {
 	pub(super) fn events(&self) {
 		let self2 = self.clone();
-		self.wnd.on().wm_destroy(move || {
-			self2.unload() // cleanup
+		self.wnd.on().wm_close(move || {
+			self2.unload()?; // cleanup
+			self2.wnd.hwnd().EndDialog(0)?;
+			Ok(())
 		});
 
 		let self2 = self.clone();
