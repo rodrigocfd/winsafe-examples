@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, gui, AnyResult};
+use winsafe::{self as w, prelude::*, gui};
 
 #[derive(Clone)]
 pub struct MyWindow {
@@ -135,7 +135,7 @@ impl MyWindow {
 		new_self
 	}
 
-	pub fn run(&self) -> AnyResult<i32> {
+	pub fn run(&self) -> w::AnyResult<i32> {
 		self.wnd.run_main(None)
 	}
 

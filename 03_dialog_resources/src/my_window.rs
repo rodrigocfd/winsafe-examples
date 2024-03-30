@@ -1,4 +1,4 @@
-use winsafe::{prelude::*, gui, AnyResult};
+use winsafe::{self as w, prelude::*, gui};
 
 use crate::ids;
 use crate::my_modal::MyModal;
@@ -26,7 +26,7 @@ impl MyWindow {
 		new_self
 	}
 
-	pub fn run(&self) -> AnyResult<i32> {
+	pub fn run(&self) -> w::AnyResult<i32> {
 		self.wnd.run_main(None)
 	}
 

@@ -11,7 +11,7 @@ impl WndMain {
 		});
 
 		let wnd = self.wnd.clone();
-		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL.into(), move || {
+		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL, move || {
 			wnd.close(); // close on ESC
 			Ok(())
 		});

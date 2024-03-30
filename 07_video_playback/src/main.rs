@@ -7,24 +7,14 @@ mod wnd_tracker;
 mod wnd_video;
 
 fn main() {
-	if let Err(e) = run_main_window() {
-		w::HWND::NULL.TaskDialog(
-			None,
-			Some("Unhandled error"),
-			None,
-			Some(&e.to_string()),
-			co::TDCBF::OK,
-			w::IconRes::Error,
-		).unwrap();
+	if let Err(e) = (|| {
+		let _com_lib = w::CoInitializeEx(
+			co::COINIT::APARTMENTTHREADED
+				| co::COINIT::DISABLE_OLE1DDE,
+		)?;
+		wnd_main::WndMain::new().run()
+	})() {
+		w::HWND::NULL.MessageBox(
+			&e.to_string(), "Uncaught error", co::MB::ICONERROR).unwrap();
 	}
-}
-
-fn run_main_window() -> w::AnyResult<i32> {
-	let _com_lib = w::CoInitializeEx(
-		co::COINIT::APARTMENTTHREADED
-		| co::COINIT::DISABLE_OLE1DDE)?;
-
-	wnd_main::WndMain::new()
-		.run()
-		.map_err(|err| err.into())
 }

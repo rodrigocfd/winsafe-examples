@@ -6,20 +6,8 @@ use winsafe::{self as w, prelude::*, co};
 use my_window::MyWindow;
 
 fn main() {
-	if let Err(e) = run_app() {
-		w::HWND::NULL.TaskDialog(
-			None,
-			Some("Unhandled error"),
-			None,
-			Some(&e.to_string()),
-			co::TDCBF::OK,
-			w::IconRes::Error,
-		).unwrap();
+	if let Err(e) = (|| MyWindow::new().run())() {
+		w::HWND::NULL.MessageBox(
+			&e.to_string(), "Uncaught error", co::MB::ICONERROR).unwrap();
 	}
-}
-
-fn run_app() -> w::AnyResult<i32> {
-	MyWindow::new()
-		.run()
-		.map_err(|err| err.into())
 }

@@ -1,4 +1,6 @@
 //! IDs of the resources defined in "resources\example03.res".
+//!
+//! They are the "glue" between our Rust code and the dialog resources.
 
 use winsafe::seq_ids;
 

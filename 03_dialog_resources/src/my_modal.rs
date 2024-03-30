@@ -77,7 +77,7 @@ impl MyModal {
 		});
 
 		let self2 = self.clone();
-		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL.into(), move || { // ESC key
+		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL, move || { // ESC key
 			*self2.return_val.try_borrow_mut()? = None; // no return text
 			self2.wnd.hwnd().EndDialog(0)?;
 			Ok(())

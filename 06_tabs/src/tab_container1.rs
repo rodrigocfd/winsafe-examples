@@ -50,7 +50,6 @@ impl TabContainer1 {
 		let self2 = self.clone();
 		self.btn.on().bn_clicked(move || {
 			self2.wnd.hwnd().GetParent()?.TaskDialog(
-				None,
 				Some("Hello"),
 				None,
 				Some(&self2.txt.text()),
