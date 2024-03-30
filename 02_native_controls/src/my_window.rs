@@ -19,7 +19,7 @@ impl MyWindow {
 			gui::WindowMainOpts {
 				title: "Native controls".to_owned(),
 				class_icon: gui::Icon::Id(101),
-				size: (620, 240),
+				size: (600, 240),
 				..Default::default()
 			},
 		);
@@ -98,7 +98,7 @@ impl MyWindow {
 		let month_cal = gui::MonthCalendar::new(
 			&wnd,
 			gui::MonthCalendarOpts {
-				position: (220, 20), // note that the MonthCalendar has a fixed size
+				position: (210, 20), // note that the MonthCalendar has a fixed size
 				..Default::default()
 			},
 		);
@@ -106,7 +106,7 @@ impl MyWindow {
 		let tree = gui::TreeView::new(
 			&wnd,
 			gui::TreeViewOpts {
-				position: (470, 20),
+				position: (450, 20),
 				size: (130, 160),
 				..Default::default()
 			},
