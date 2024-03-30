@@ -9,6 +9,7 @@ pub struct MyWindow {
 	cmb_cities: gui::ComboBox,
 	rad_seas:   gui::RadioGroup,
 	month_cal:  gui::MonthCalendar,
+	tree:       gui::TreeView,
 	sbar:       gui::StatusBar,
 }
 
@@ -18,7 +19,7 @@ impl MyWindow {
 			gui::WindowMainOpts {
 				title: "Native controls".to_owned(),
 				class_icon: gui::Icon::Id(101),
-				size: (480, 240),
+				size: (620, 240),
 				..Default::default()
 			},
 		);
@@ -97,7 +98,16 @@ impl MyWindow {
 		let month_cal = gui::MonthCalendar::new(
 			&wnd,
 			gui::MonthCalendarOpts {
-				position: (220, 20),
+				position: (220, 20), // note that the MonthCalendar has a fixed size
+				..Default::default()
+			},
+		);
+
+		let tree = gui::TreeView::new(
+			&wnd,
+			gui::TreeViewOpts {
+				position: (470, 20),
+				size: (130, 160),
 				..Default::default()
 			},
 		);
@@ -118,6 +128,7 @@ impl MyWindow {
 			cmb_cities,
 			rad_seas,
 			month_cal,
+			tree,
 			sbar,
 		};
 		new_self.events();
@@ -133,6 +144,14 @@ impl MyWindow {
 		self.wnd.on().wm_create(move |_| { // called once, right after the window is created
 			self2.sbar.parts().get(0).set_text("This is the status bar");
 			self2.sbar.parts().get(1).set_text("Hi");
+
+			self2.tree.items().add_root("First", None, ());
+			self2.tree.items().add_root("Second", None, ());
+			let third = self2.tree.items().add_root("Third", None, ());
+			third.add_child("Child 1", None, ());
+			third.add_child("Child 2", None, ());
+			third.expand(true);
+
 			self2.txt_name.focus();
 			Ok(0)
 		});
@@ -172,6 +191,13 @@ impl MyWindow {
 		self.month_cal.on().mcn_sel_change(move |p| {
 			let s = &p.stSelStart;
 			self2.wnd.set_text(&format!("{}-{}-{}", s.wYear, s.wMonth, s.wDay));
+			Ok(())
+		});
+
+		let self2 = self.clone();
+		self.tree.on().tvn_sel_changed(move |p| {
+			let selected_item = self2.tree.items().get(&p.itemNew.hItem);
+			self2.wnd.set_text(&selected_item.text());
 			Ok(())
 		});
 	}

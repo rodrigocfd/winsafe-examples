@@ -12,7 +12,7 @@ impl WndMain {
 
 		let wnd = self.wnd.clone();
 		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL.into(), move || {
-			wnd.hwnd().SendMessage(w::msg::wm::Close {}); // close on ESC
+			wnd.close(); // close on ESC
 			Ok(())
 		});
 
