@@ -6,8 +6,8 @@ pub struct TabContainer2 {
 	cmb: gui::ComboBox,
 }
 
-impl GuiTab for TabContainer2 { // we must implement GuiTab so this window can be used as a tab
-	fn as_ctrl(&self) -> &gui::WindowControl {
+impl AsRef<gui::WindowControl> for TabContainer2 { // we must implement AsRef so this window can be used as a tab
+	fn as_ref(&self) -> &gui::WindowControl {
 		&self.wnd
 	}
 }

@@ -7,8 +7,8 @@ pub struct TabContainer1 {
 	btn: gui::Button,
 }
 
-impl GuiTab for TabContainer1 { // we must implement GuiTab so this window can be used as a tab
-	fn as_ctrl(&self) -> &gui::WindowControl {
+impl AsRef<gui::WindowControl> for TabContainer1 { // we must implement AsRef so this window can be used as a tab
+	fn as_ref(&self) -> &gui::WindowControl {
 		&self.wnd
 	}
 }
