@@ -67,7 +67,7 @@ impl ClickBoard {
 			// GDI object and call SelectObject() again at the end of current
 			// scope. We have no use for the returned guard, but we must keep it
 			// alive, otherwise SelectObject() is called right away.
-			let _old_pen = hdc.SelectObject(&*pen);
+			let _old_pen = hdc.SelectObject(&*pen)?;
 
 			hdc.MoveToEx(0, 0, None)?; // first drawn line starts from top left corner
 
