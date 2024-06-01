@@ -66,8 +66,8 @@ impl WndVideo {
 
 		graph_builder.RenderFile(video_path)?;
 
-		let mut rc = self.wnd.hwnd().GetWindowRect()?;    // screen coordinates
-		self.wnd.hwnd().ScreenToClientRc(&mut rc)?;       // now relative to parent
+		let rc = self.wnd.hwnd().ScreenToClientRc( // then, relative to parent
+			self.wnd.hwnd().GetWindowRect()?)?; // first, screen coordinates
 		controller_evr.SetVideoPosition(None, Some(rc))?; // set video to fit window
 
 		let media_seek = graph_builder.QueryInterface::<w::IMediaSeeking>()?;
