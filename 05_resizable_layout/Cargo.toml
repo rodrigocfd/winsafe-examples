@@ -6,6 +6,7 @@ edition = "2021"
 
 [profile.release]
 lto = true
+strip = true
 codegen-units = 1
 
 [dependencies]
