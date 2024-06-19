@@ -11,23 +11,24 @@ PROJS=(
 )
 
 set -e
+BLUE='\033[0;34m'
+PURP='\033[0;35m'
+NC='\033[0m'
 
 print_elapsed () {
 	MIN=$(( ($1 - ($1 % (60 * 1000))) / (1000 * 60) ))
 	SEC=$(( ($TF - ($MIN * 1000 * 60) - ($1 % 1000)) / 1000 ))
 	MS=$(( $1 % 1000 ))
 
-	PURP='\033[0;35m'
-	NC='\033[0m'
 	if (($MIN > 0)); then
-		printf "    ${PURP}Duration${NC} %02d:%02d.%03d min\n" $MIN $SEC $MS
+		printf "    ${BLUE}Duration${NC} %02d:%02d.%03d min\n" $MIN $SEC $MS
 	else
-		printf "    ${PURP}Duration${NC} %d.%03d sec\n" $SEC $MS
+		printf "    ${BLUE}Duration${NC} %d.%03d sec\n" $SEC $MS
 	fi
 }
 
 for PROJ in "${PROJS[@]}" ; do
-	echo "$PROJ..."
+	printf "${PURP}${PROJ}${NC}...\n"
 	T0=$(date +%s%N)
 
 	cd $PROJ
