@@ -52,7 +52,7 @@ impl WndMain {
 		])?;
 
 		// Create accelerator table.
-		let accel_table = w::HACCEL::CreateAcceleratorTable(&mut [
+		let accel_table = w::HACCEL::CreateAcceleratorTable(&[
 			w::ACCEL {
 				fVirt: co::ACCELF::VIRTKEY | co::ACCELF::CONTROL,
 				cmd: ids::MNU_FILE_OPEN,
