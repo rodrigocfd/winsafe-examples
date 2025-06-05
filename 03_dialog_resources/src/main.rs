@@ -1,8 +1,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(any(), rustfmt::skip)]
 
-mod my_window;
-mod my_modal;
 mod ids;
+mod my_modal;
+mod my_window;
 
 use winsafe::{self as w, prelude::*, co};
 use my_window::MyWindow;

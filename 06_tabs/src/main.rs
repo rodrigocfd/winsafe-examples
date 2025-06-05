@@ -1,4 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(any(), rustfmt::skip)]
 
 mod my_window;
 mod tab_container1;

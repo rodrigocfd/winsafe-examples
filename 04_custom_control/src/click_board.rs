@@ -1,8 +1,11 @@
+#![cfg_attr(any(), rustfmt::skip)]
+
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use winsafe::{self as w, prelude::*, gui, co};
+use winsafe::{self as w, prelude::*, co, gui};
 
+/// A custom control which processes user clicks to draw lines.
 #[derive(Clone)]
 pub struct ClickBoard {
 	wnd:      gui::WindowControl,
@@ -11,21 +14,26 @@ pub struct ClickBoard {
 }
 
 impl ClickBoard {
-	pub fn new(parent: &impl GuiParent, position: (i32, i32), size: (u32, u32)) -> Self {
+	pub fn new(
+		parent: &(impl GuiParent + 'static),
+		position: (i32, i32),
+		size: (i32, i32),
+	) -> Self
+	{
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
 				class_cursor: gui::Cursor::Idc(co::IDC::CROSS),
+				ex_style:     gui::WindowControlOpts::default().ex_style | co::WS_EX::CLIENTEDGE,
 				position,
 				size,
-				ex_style: gui::WindowControlOpts::default().ex_style | co::WS_EX::CLIENTEDGE,
 				..Default::default()
 			},
 		);
 
 		let new_self = Self {
 			wnd,
-			points: Rc::new(RefCell::new(Vec::default())),
+			points:   Rc::new(RefCell::new(Vec::default())),
 			fn_click: Rc::new(RefCell::new(None)),
 		};
 

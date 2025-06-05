@@ -1,4 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(any(), rustfmt::skip)]
 
 mod my_window;
 
@@ -14,6 +15,6 @@ fn main() {
 
 fn run_app() -> AnyResult<i32> {
 	MyWindow::new() // create our main window...
-		.run()       // ...and run it
+		.run()      // ...and run it
 		.map_err(|err| err.into())
 }

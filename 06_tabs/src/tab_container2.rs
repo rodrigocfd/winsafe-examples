@@ -1,5 +1,8 @@
-use winsafe::{self as w, prelude::*, gui, co};
+#![cfg_attr(any(), rustfmt::skip)]
 
+use winsafe::{prelude::*, gui, co};
+
+/// Contents of second tab.
 #[derive(Clone)]
 pub struct TabContainer2 {
 	wnd: gui::WindowControl,
@@ -13,7 +16,7 @@ impl AsRef<gui::WindowControl> for TabContainer2 { // we must implement AsRef so
 }
 
 impl TabContainer2 {
-	pub fn new(parent: &impl GuiParent) -> Self {
+	pub fn new(parent: &(impl GuiParent + 'static)) -> Self {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
@@ -25,7 +28,7 @@ impl TabContainer2 {
 		let cmb = gui::ComboBox::new(
 			&wnd,
 			gui::ComboBoxOpts {
-				position: (10, 10),
+				position: gui::dpi(10, 10),
 				items: vec![
 					"Avocado".to_owned(),
 					"Banana".to_owned(),

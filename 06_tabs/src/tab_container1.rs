@@ -1,5 +1,8 @@
+#![cfg_attr(any(), rustfmt::skip)]
+
 use winsafe::{self as w, prelude::*, gui, co};
 
+/// Contents of first tab.
 #[derive(Clone)]
 pub struct TabContainer1 {
 	wnd: gui::WindowControl,
@@ -14,7 +17,7 @@ impl AsRef<gui::WindowControl> for TabContainer1 { // we must implement AsRef so
 }
 
 impl TabContainer1 {
-	pub fn new(parent: &impl GuiParent) -> Self {
+	pub fn new(parent: &(impl GuiParent + 'static)) -> Self {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
@@ -26,8 +29,8 @@ impl TabContainer1 {
 		let txt = gui::Edit::new(
 			&wnd,
 			gui::EditOpts {
-				position: (20, 20),
-				width: 180,
+				position: gui::dpi(20, 20),
+				width:    gui::dpi_x(180),
 				..Default::default()
 			},
 		);
@@ -35,8 +38,8 @@ impl TabContainer1 {
 		let btn = gui::Button::new(
 			&wnd,
 			gui::ButtonOpts {
-				position: (20, 52),
-				text: "&Hello".to_owned(),
+				position: gui::dpi(20, 52),
+				text:     "&Hello".to_owned(),
 				..Default::default()
 			},
 		);
@@ -52,7 +55,7 @@ impl TabContainer1 {
 			self2.wnd.hwnd().GetParent()?.TaskDialog(
 				Some("Hello"),
 				None,
-				Some(&self2.txt.text()),
+				Some(&self2.txt.text()?),
 				co::TDCBF::OK,
 				w::IconRes::Info,
 			)?;

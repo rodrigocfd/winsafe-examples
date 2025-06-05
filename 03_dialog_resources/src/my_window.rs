@@ -1,3 +1,5 @@
+#![cfg_attr(any(), rustfmt::skip)]
+
 use winsafe::{self as w, prelude::*, gui};
 
 use crate::ids;
@@ -33,15 +35,14 @@ impl MyWindow {
 	fn events(&self) {
 		let self2 = self.clone();
 		self.btn_show.on().bn_clicked(move || {
-			let input_text = self2.txt_input.text();
+			let input_text = self2.txt_input.text()?;
 
-			let my_modal = MyModal::new(&self2.wnd, &input_text);
-			let returned_text = my_modal.show();
+			let returned_text = MyModal::show(&self2.wnd, &input_text); // blocks until the modal is closed
 
 			if let Some(text) = &returned_text {
 				// If user clicked OK on the modal, a text is returned,
 				// so we replace our current text with the new one.
-				self2.txt_input.set_text(text);
+				self2.txt_input.set_text(text)?;
 			}
 			Ok(())
 		});

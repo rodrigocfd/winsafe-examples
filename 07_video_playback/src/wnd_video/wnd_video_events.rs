@@ -1,4 +1,4 @@
-use winsafe::{self as w, prelude::*, co};
+use winsafe::{self as w, co, prelude::*};
 
 use super::WndVideo;
 

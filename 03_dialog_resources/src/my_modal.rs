@@ -1,3 +1,5 @@
+#![cfg_attr(any(), rustfmt::skip)]
+
 use std::cell::RefCell;
 use std::rc::Rc;
 use winsafe::{prelude::*, co, gui};
@@ -20,10 +22,12 @@ pub struct MyModal {
 }
 
 impl MyModal {
-	pub fn new(parent: &impl GuiParent, input_text: &str) -> Self {
+	/// Creates and displays the modal window. Blocks until the modal is closed
+	/// by the user.
+	pub fn show(parent: &impl GuiParent, input_text: &str) -> Option<String> {
 		let dont_move = (gui::Horz::None, gui::Vert::None);
 
-		let wnd = gui::WindowModal::new_dlg(parent, ids::DLG_MODAL);
+		let wnd = gui::WindowModal::new_dlg(ids::DLG_MODAL);
 
 		let lbl_incoming = gui::Label::new_dlg(&wnd, ids::LBL_INCOMING, dont_move);
 		let txt_incoming = gui::Edit::new_dlg(&wnd, ids::TXT_INCOMING, dont_move);
@@ -42,12 +46,9 @@ impl MyModal {
 		};
 
 		new_self.events();
-		new_self
-	}
 
-	pub fn show(&self) -> Option<String> {
-		self.wnd.show_modal().unwrap();
-		self.return_val.borrow()
+		new_self.wnd.show_modal(parent).unwrap(); // blocks until the modal is closed
+		new_self.return_val.borrow()
 			.as_ref()
 			.map(|s| s.clone()) // return the text typed in the modal, if any
 	}
@@ -64,7 +65,7 @@ impl MyModal {
 		let self2 = self.clone();
 		self.btn_ok.on().bn_clicked(move || {
 			// Save the text typed by the user.
-			*self2.return_val.try_borrow_mut()? = Some(self2.txt_return.text());
+			*self2.return_val.try_borrow_mut()? = Some(self2.txt_return.text()?);
 			self2.wnd.hwnd().EndDialog(0)?;
 			Ok(())
 		});
@@ -77,7 +78,7 @@ impl MyModal {
 		});
 
 		let self2 = self.clone();
-		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL, move || { // ESC key
+		self.wnd.on().wm_command_acc_menu(co::DLGID::CANCEL, move || { // ESC key
 			*self2.return_val.try_borrow_mut()? = None; // no return text
 			self2.wnd.hwnd().EndDialog(0)?;
 			Ok(())

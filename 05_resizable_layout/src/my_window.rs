@@ -1,5 +1,8 @@
-use winsafe::{self as w, prelude::*, gui, co};
+#![cfg_attr(any(), rustfmt::skip)]
 
+use winsafe::{self as w, gui, co};
+
+/// Main application window.
 #[derive(Clone)]
 pub struct MyWindow {
 	wnd: gui::WindowMain,
@@ -12,10 +15,10 @@ impl MyWindow {
 	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
-				title: "Resizable layout".to_owned(),
+				title:      "Resizable layout".to_owned(),
 				class_icon: gui::Icon::Id(101),
-				size: (300, 150),
-				style: gui::WindowMainOpts::default().style |
+				size:       gui::dpi(300, 150),
+				style:      gui::WindowMainOpts::default().style |
 					co::WS::MINIMIZEBOX | co::WS::MAXIMIZEBOX | co::WS::SIZEBOX, // window can be resized
 				..Default::default()
 			},
@@ -24,8 +27,8 @@ impl MyWindow {
 		let lst = gui::ListView::new(
 			&wnd,
 			gui::ListViewOpts {
-				position: (10, 10),
-				size: (280, 100),
+				position: gui::dpi(10, 10),
+				size:     gui::dpi(280, 100),
 				// Resize horizontally and vertically together with parent window.
 				resize_behavior: (gui::Horz::Resize, gui::Vert::Resize),
 				..Default::default()
@@ -35,8 +38,8 @@ impl MyWindow {
 		let txt = gui::Edit::new(
 			&wnd,
 			gui::EditOpts {
-				position: (10, 120),
-				width: 180,
+				position: gui::dpi(10, 120),
+				width:    gui::dpi_x(180),
 				// Resize horizontally together with parent window.
 				// Move anchored at bottom as parent window resizes.
 				resize_behavior: (gui::Horz::Resize, gui::Vert::Repos),
@@ -47,8 +50,8 @@ impl MyWindow {
 		let btn = gui::Button::new(
 			&wnd,
 			gui::ButtonOpts {
-				text: "&Button".to_owned(),
-				position: (200, 120),
+				text:     "&Button".to_owned(),
+				position: gui::dpi(200, 120),
 				// Move anchored at right/bottom as parent window resizes.
 				resize_behavior: (gui::Horz::Repos, gui::Vert::Repos),
 				..Default::default()
@@ -65,6 +68,6 @@ impl MyWindow {
 	}
 
 	fn events(&self) {
-
+		// no events being handled
 	}
 }

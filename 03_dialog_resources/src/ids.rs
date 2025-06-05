@@ -2,6 +2,8 @@
 //!
 //! They are the "glue" between our Rust code and the dialog resources.
 
+#![cfg_attr(any(), rustfmt::skip)]
+
 use winsafe::seq_ids;
 
 seq_ids! {

@@ -1,4 +1,4 @@
-use winsafe::{self as w, prelude::*, co};
+use winsafe::{self as w, co, prelude::*};
 
 use super::WndTracker;
 
@@ -6,8 +6,7 @@ impl WndTracker {
 	pub(super) fn events(&self) {
 		let self2 = self.clone();
 		self.wnd.on().wm_paint(move || {
-			let has_focus = w::HWND::GetFocus()
-				.map_or(false, |h| h == *self2.wnd.hwnd());
+			let has_focus = w::HWND::GetFocus().map_or(false, |h| h == *self2.wnd.hwnd());
 
 			let hdc = self2.wnd.hwnd().BeginPaint()?;
 

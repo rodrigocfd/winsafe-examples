@@ -1,5 +1,8 @@
+#![cfg_attr(any(), rustfmt::skip)]
+
 use winsafe::{prelude::*, gui, AnyResult};
 
+/// Main application window.
 #[derive(Clone)]
 pub struct MyWindow {
 	wnd:       gui::WindowMain, // responsible for managing the window
@@ -10,9 +13,9 @@ impl MyWindow {
 	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new( // instantiate the window manager
 			gui::WindowMainOpts {
-				title: "My window title".to_owned(),
+				title:      "My window title".to_owned(),
 				class_icon: gui::Icon::Id(101), // load icon from resource ID 101
-				size: (300, 150),
+				size:       (300, 150),
 				..Default::default() // leave all other options as default
 			},
 		);
@@ -20,7 +23,7 @@ impl MyWindow {
 		let btn_hello = gui::Button::new(
 			&wnd, // the window manager is the parent of our button
 			gui::ButtonOpts {
-				text: "&Click me".to_owned(),
+				text:     "&Click me".to_owned(),
 				position: (20, 20),
 				..Default::default()
 			},

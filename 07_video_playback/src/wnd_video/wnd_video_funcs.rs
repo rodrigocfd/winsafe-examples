@@ -1,17 +1,16 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use winsafe::{self as w, prelude::*, co, gui};
+use winsafe::{self as w, co, gui, prelude::*};
 
 use super::{ComObjs, WndVideo};
 
 impl WndVideo {
 	pub fn new(
-		parent: &impl GuiParent,
+		parent: &(impl GuiParent + 'static),
 		ctrl_id: u16,
 		position: (i32, i32),
-		size: (u32, u32),
-	) -> Self
-	{
+		size: (i32, i32),
+	) -> Self {
 		let wnd = gui::WindowControl::new(
 			parent,
 			gui::WindowControlOpts {
@@ -44,13 +43,13 @@ impl WndVideo {
 
 		let graph_builder = w::CoCreateInstance::<w::IGraphBuilder>(
 			&co::CLSID::FilterGraph,
-			None,
+			None::<&w::IUnknown>,
 			co::CLSCTX::INPROC_SERVER,
 		)?;
 
 		let vmr = w::CoCreateInstance::<w::IBaseFilter>(
 			&co::CLSID::EnhancedVideoRenderer,
-			None,
+			None::<&w::IUnknown>,
 			co::CLSCTX::INPROC_SERVER,
 		)?;
 
@@ -58,17 +57,16 @@ impl WndVideo {
 
 		let get_svc = vmr.QueryInterface::<w::IMFGetService>()?;
 
-		let controller_evr = get_svc.GetService::<w::IMFVideoDisplayControl>(
-			&co::MF_SERVICE::MR_VIDEO_RENDER_SERVICE,
-		)?;
+		let controller_evr = get_svc
+			.GetService::<w::IMFVideoDisplayControl>(&co::MF_SERVICE::MR_VIDEO_RENDER_SERVICE)?;
 		controller_evr.SetVideoWindow(self.wnd.hwnd())?;
 		controller_evr.SetAspectRatioMode(co::MFVideoARMode::PreservePicture)?;
 
 		graph_builder.RenderFile(video_path)?;
 
-		let rc = self.wnd.hwnd().ScreenToClientRc( // then, relative to parent
-			self.wnd.hwnd().GetWindowRect()?)?; // first, screen coordinates
-		controller_evr.SetVideoPosition(None, Some(rc))?; // set video to fit window
+		let rc_s = self.wnd.hwnd().GetWindowRect()?; // first, in screen coordinates
+		let rc_p = self.wnd.hwnd().ScreenToClientRc(rc_s)?; // now, relative to parent
+		controller_evr.SetVideoPosition(None, Some(rc_p))?; // set video to fit window
 
 		let media_seek = graph_builder.QueryInterface::<w::IMediaSeeking>()?;
 
@@ -82,8 +80,15 @@ impl WndVideo {
 		// 	println!("Filter: {}", filter_info.achName());
 		// }
 
-		*self.com_objs.try_borrow_mut()? = Some( // finally save the COM objects
-			ComObjs { graph_builder, vmr, controller_evr, media_seek, media_ctrl },
+		*self.com_objs.try_borrow_mut()? = Some(
+			// finally save the COM objects
+			ComObjs {
+				graph_builder,
+				vmr,
+				controller_evr,
+				media_seek,
+				media_ctrl,
+			},
 		);
 		Ok(())
 	}
@@ -126,8 +131,10 @@ impl WndVideo {
 	pub fn set_pos(&self, ms: i64) -> w::AnyResult<()> {
 		if let Some(com_objs) = self.com_objs.try_borrow_mut()?.as_ref() {
 			com_objs.media_seek.SetPositions(
-				ms * 10_000, co::SEEKING_FLAGS::AbsolutePositioning,
-				0, co::SEEKING_FLAGS::NoPositioning,
+				ms * 10_000,
+				co::SEEKING_FLAGS::AbsolutePositioning,
+				0,
+				co::SEEKING_FLAGS::NoPositioning,
 			)?;
 		}
 		Ok(())

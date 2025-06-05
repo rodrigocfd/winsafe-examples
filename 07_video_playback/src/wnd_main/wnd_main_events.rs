@@ -1,6 +1,7 @@
-use winsafe::{self as w, prelude::*, co};
+use winsafe::{self as w, co, prelude::*};
 
-use super::{ids, WndMain};
+use super::WndMain;
+use crate::ids;
 
 impl WndMain {
 	pub(super) fn events(&self) {
@@ -11,57 +12,59 @@ impl WndMain {
 		});
 
 		let wnd = self.wnd.clone();
-		self.wnd.on().wm_command_accel_menu(co::DLGID::CANCEL, move || {
-			wnd.close(); // close on ESC
-			Ok(())
-		});
+		self.wnd
+			.on()
+			.wm_command_acc_menu(co::DLGID::CANCEL, move || {
+				wnd.close(); // close on ESC
+				Ok(())
+			});
 
 		let self2 = self.clone();
-		self.wnd.on().wm_command_accel_menu(ids::MNU_FILE_OPEN, move || {
-			let fileo = w::CoCreateInstance::<w::IFileOpenDialog>(
-				&co::CLSID::FileOpenDialog,
-				None,
-				co::CLSCTX::INPROC_SERVER,
-			)?;
-
-			fileo.SetOptions(
-				fileo.GetOptions()?
-					| co::FOS::FORCEFILESYSTEM
-					| co::FOS::ALLOWMULTISELECT
-					| co::FOS::FILEMUSTEXIST,
-			)?;
-
-			fileo.SetFileTypes(&[
-				("Video files", "*.avi;*.mkv;*.mp4"),
-				("AVI video files", "*.avi"),
-				("MKV video files", "*.mkv"),
-				("MP4 video files", "*.mp4"),
-				("All files", "*.*"),
-			])?;
-			fileo.SetFileTypeIndex(1)?;
-
-			if fileo.Show(self2.wnd.hwnd())? {
-				self2.wnd_video.load(
-					&fileo.GetResult()?
-						.GetDisplayName(co::SIGDN::FILESYSPATH)?,
+		self.wnd
+			.on()
+			.wm_command_acc_menu(ids::MNU_FILE_OPEN, move || {
+				let fileo = w::CoCreateInstance::<w::IFileOpenDialog>(
+					&co::CLSID::FileOpenDialog,
+					None::<&w::IUnknown>,
+					co::CLSCTX::INPROC_SERVER,
 				)?;
 
-				let mut taskbar = self2.taskbar.try_borrow_mut()?;
-				if taskbar.is_none() { // taskbar object not created yet?
-					*taskbar = Some(
-						w::CoCreateInstance(
-							&co::CLSID::TaskbarList,
-							None,
-							co::CLSCTX::INPROC_SERVER,
-						)?,
-					);
-				}
+				fileo.SetOptions(
+					fileo.GetOptions()?
+						| co::FOS::FORCEFILESYSTEM
+						| co::FOS::ALLOWMULTISELECT
+						| co::FOS::FILEMUSTEXIST,
+				)?;
 
-				self2.wnd.hwnd().KillTimer(ids::TIMER_ID).ok(); // kill any previous timer
-				self2.wnd.hwnd().SetTimer(ids::TIMER_ID, 100, None)?; // will fire WM_TIMER each 100 ms
-			}
-			Ok(())
-		});
+				fileo.SetFileTypes(&[
+					("Video files", "*.avi;*.mkv;*.mp4"),
+					("AVI video files", "*.avi"),
+					("MKV video files", "*.mkv"),
+					("MP4 video files", "*.mp4"),
+					("All files", "*.*"),
+				])?;
+				fileo.SetFileTypeIndex(1)?;
+
+				if fileo.Show(self2.wnd.hwnd())? {
+					self2
+						.wnd_video
+						.load(&fileo.GetResult()?.GetDisplayName(co::SIGDN::FILESYSPATH)?)?;
+
+					let mut taskbar = self2.taskbar.try_borrow_mut()?;
+					if taskbar.is_none() {
+						// Taskbar object not created yet?
+						*taskbar = Some(w::CoCreateInstance(
+							&co::CLSID::TaskbarList,
+							None::<&w::IUnknown>,
+							co::CLSCTX::INPROC_SERVER,
+						)?);
+					}
+
+					self2.wnd.hwnd().KillTimer(ids::TIMER_ID).ok(); // kill any previous timer
+					self2.wnd.hwnd().SetTimer(ids::TIMER_ID, 100, None)?; // will fire WM_TIMER each 100 ms
+				}
+				Ok(())
+			});
 
 		let self2 = self.clone();
 		self.wnd_tracker.on_click(move |pct| {
@@ -77,12 +80,14 @@ impl WndMain {
 			self2.wnd_video.play_pause()?;
 
 			if let Some(taskbar) = self2.taskbar.try_borrow()?.as_ref() {
-				taskbar.SetProgressState(self2.wnd.hwnd(),
-					if self2.wnd_video.is_running()? { // toggle taskbar green/yellow color
-						co::TBPF::NORMAL
+				taskbar.SetProgressState(
+					self2.wnd.hwnd(),
+					if self2.wnd_video.is_running()? {
+						co::TBPF::NORMAL // toggle taskbar green/yellow color
 					} else {
 						co::TBPF::PAUSED
-					})?;
+					},
+				)?;
 			}
 
 			Ok(())
@@ -98,17 +103,22 @@ impl WndMain {
 		});
 
 		let self2 = self.clone();
-		self.wnd.on().wm_timer(ids::TIMER_ID, move || { // started when a video is loaded
+		self.wnd.on().wm_timer(ids::TIMER_ID, move || {
+			// Started when a video is loaded.
 			if let Some((ms_cur, ms_total)) = self2.wnd_video.curpos_duration()? {
-				self2.wnd.set_text(
-					&format!("{} / {}", ms_to_hms(ms_cur), ms_to_hms(ms_total)),
-				);
+				self2.wnd.hwnd().SetWindowText(&format!(
+					"{} / {}",
+					ms_to_hms(ms_cur),
+					ms_to_hms(ms_total)
+				))?;
 
 				if let Some(taskbar) = self2.taskbar.try_borrow()?.as_ref() {
 					taskbar.SetProgressValue(self2.wnd.hwnd(), ms_cur as _, ms_total as _)?;
 				}
 
-				self2.wnd_tracker.set_rendered_pos(ms_cur as f32 / ms_total as f32)?;
+				self2
+					.wnd_tracker
+					.set_rendered_pos(ms_cur as f32 / ms_total as f32)?;
 			}
 			Ok(())
 		});

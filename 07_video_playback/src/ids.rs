@@ -1,4 +1,4 @@
-/// Control and menu IDs.
+//! Control and menu IDs.
 
 use winsafe::seq_ids;
 

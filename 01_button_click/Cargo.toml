@@ -2,7 +2,7 @@
 name = "button-click"
 version = "1.0.0"
 authors = ["Rodrigo César de Freitas Dias <rcesar@gmail.com>"]
-edition = "2021"
+edition = "2024"
 
 [profile.release]
 lto = true
@@ -10,4 +10,4 @@ strip = true
 codegen-units = 1
 
 [dependencies]
-winsafe = { version = "0.0.23", features = ["gui"] }
+winsafe = { version = "0.0.24", features = ["gui"] }
