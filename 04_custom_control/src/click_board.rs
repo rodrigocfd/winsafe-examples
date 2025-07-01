@@ -69,7 +69,7 @@ impl ClickBoard {
 			// CreatePen() also returns a guard, which will call DeleteObject()
 			// at the end of current scope.
 			let pen = w::HPEN::CreatePen(
-				co::PS::SOLID, 1, w::COLORREF::new(0, 0, 0xff))?; // blue color
+				co::PS::SOLID, 1, w::COLORREF::from_rgb(0, 0, 0xff))?; // blue color
 
 			// SelectObject() also returns a guard, which will keep the replaced
 			// GDI object and call SelectObject() again at the end of current

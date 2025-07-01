@@ -10,4 +10,4 @@ strip = true
 codegen-units = 1
 
 [dependencies]
-winsafe = { version = "0.0.24", features = ["dshow", "gui", "mf", "shell"] }
+winsafe = { version = "0.0.25", features = ["dshow", "gui", "mf", "shell"] }
