@@ -5,6 +5,7 @@ use winsafe::{self as w, co, gui, prelude::*};
 use super::WndTracker;
 
 impl WndTracker {
+	#[must_use]
 	pub fn new(
 		parent: &(impl GuiParent + 'static),
 		ctrl_id: u16,

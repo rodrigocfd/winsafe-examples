@@ -15,7 +15,7 @@ impl MyWindow {
 	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
-				title:      "Resizable layout".to_owned(),
+				title:      "Resizable layout",
 				class_icon: gui::Icon::Id(101),
 				size:       gui::dpi(300, 150),
 				style:      gui::WindowMainOpts::default().style |
@@ -50,7 +50,7 @@ impl MyWindow {
 		let btn = gui::Button::new(
 			&wnd,
 			gui::ButtonOpts {
-				text:     "&Button".to_owned(),
+				text:     "&Button",
 				position: gui::dpi(200, 120),
 				// Move anchored at right/bottom as parent window resizes.
 				resize_behavior: (gui::Horz::Repos, gui::Vert::Repos),

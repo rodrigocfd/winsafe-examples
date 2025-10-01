@@ -15,7 +15,7 @@ impl MyWindow {
 	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new(
 			gui::WindowMainOpts {
-				title:      "Custom control".to_owned(),
+				title:      "Custom control",
 				class_icon: gui::Icon::Id(101),
 				size:       gui::dpi(300, 150),
 				style:      gui::WindowMainOpts::default().style | co::WS::MINIMIZEBOX, // add a minimize button

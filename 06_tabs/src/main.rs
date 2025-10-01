@@ -9,7 +9,7 @@ use winsafe::{self as w, prelude::*, co};
 use my_window::MyWindow;
 
 fn main() {
-	if let Err(e) = (|| MyWindow::new().run())() {
+	if let Err(e) = MyWindow::create_and_run() {
 		w::HWND::NULL.MessageBox(
 			&e.to_string(), "Uncaught error", co::MB::ICONERROR).unwrap();
 	}

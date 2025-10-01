@@ -5,7 +5,8 @@ use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 use winsafe::{self as w, co, gui};
 
-/// Clickable progress bar at the bottom of the main window.
+/// Child control which renders the progress bar at the bottom of the main
+/// window.
 #[derive(Clone)]
 pub struct WndTracker {
 	wnd: gui::WindowControl,

@@ -1,45 +1,44 @@
 #![cfg_attr(any(), rustfmt::skip)]
 
-use winsafe::{self as w, prelude::*, gui, co};
+use winsafe::{self as w, gui, co, prelude::*};
 
 /// Contents of first tab.
 #[derive(Clone)]
 pub struct TabContainer1 {
-	wnd: gui::WindowControl,
+	wnd: gui::TabPage,
 	txt: gui::Edit,
 	btn: gui::Button,
 }
 
-impl AsRef<gui::WindowControl> for TabContainer1 { // we must implement AsRef so this window can be used as a tab
-	fn as_ref(&self) -> &gui::WindowControl {
-		&self.wnd
+impl Into<gui::TabPage> for TabContainer1 { // so we can pass TabContainer1 to TabOpts
+	fn into(self) -> gui::TabPage {
+		self.wnd.clone()
 	}
 }
 
 impl TabContainer1 {
+	#[must_use]
 	pub fn new(parent: &(impl GuiParent + 'static)) -> Self {
-		let wnd = gui::WindowControl::new(
+		let wnd = gui::TabPage::new( // create the window for tab page 1
 			parent,
-			gui::WindowControlOpts {
-				ex_style: co::WS_EX::CONTROLPARENT, // so the focus rotation works properly
-				..Default::default()
-			},
+			gui::TabPageOpts::default(),
 		);
 
-		let txt = gui::Edit::new(
+		let txt = gui::Edit::new( // create a textbox
 			&wnd,
 			gui::EditOpts {
 				position: gui::dpi(20, 20),
 				width:    gui::dpi_x(180),
+				text:     "You",
 				..Default::default()
 			},
 		);
 
-		let btn = gui::Button::new(
+		let btn = gui::Button::new( // create a button
 			&wnd,
 			gui::ButtonOpts {
 				position: gui::dpi(20, 52),
-				text:     "&Hello".to_owned(),
+				text:     "&Hello",
 				..Default::default()
 			},
 		);

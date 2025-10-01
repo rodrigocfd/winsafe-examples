@@ -5,7 +5,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use winsafe::{self as w, gui};
 
-/// Renders the video.
+/// Child control which renders the video.
 #[derive(Clone)]
 pub struct WndVideo {
 	wnd: gui::WindowControl,

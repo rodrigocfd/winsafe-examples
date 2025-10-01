@@ -58,7 +58,7 @@ impl MyModal {
 		// and right before it appears on the screen.
 		let self2 = self.clone();
 		self.wnd.on().wm_init_dialog(move |_| {
-			self2.txt_incoming.set_text(&self2.input_val.try_borrow()?);
+			self2.txt_incoming.set_text(&self2.input_val.try_borrow()?)?;
 			Ok(true)
 		});
 

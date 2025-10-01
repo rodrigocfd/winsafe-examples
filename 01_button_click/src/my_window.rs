@@ -13,7 +13,7 @@ impl MyWindow {
 	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new( // instantiate the window manager
 			gui::WindowMainOpts {
-				title:      "My window title".to_owned(),
+				title:      "My window title",
 				class_icon: gui::Icon::Id(101), // load icon from resource ID 101
 				size:       (300, 150),
 				..Default::default() // leave all other options as default
@@ -23,7 +23,7 @@ impl MyWindow {
 		let btn_hello = gui::Button::new(
 			&wnd, // the window manager is the parent of our button
 			gui::ButtonOpts {
-				text:     "&Click me".to_owned(),
+				text:     "&Click me",
 				position: (20, 20),
 				..Default::default()
 			},

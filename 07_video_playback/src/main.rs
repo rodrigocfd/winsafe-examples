@@ -11,7 +11,7 @@ fn main() {
 	if let Err(e) = (|| {
 		let _com_lib =
 			w::CoInitializeEx(co::COINIT::APARTMENTTHREADED | co::COINIT::DISABLE_OLE1DDE)?;
-		wnd_main::WndMain::new().run()
+		wnd_main::WndMain::create_and_run()
 	})() {
 		w::HWND::NULL
 			.MessageBox(&e.to_string(), "Uncaught error", co::MB::ICONERROR)

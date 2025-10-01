@@ -8,11 +8,11 @@ use crate::wnd_tracker::WndTracker;
 use crate::wnd_video::WndVideo;
 
 impl WndMain {
-	pub fn new() -> Self {
-		let (menu, accel_table) = Self::build_menu().unwrap();
+	pub fn create_and_run() -> w::AnyResult<i32> {
+		let (menu, accel_table) = Self::build_menu_acctbl().unwrap();
 
 		let wnd = gui::WindowMain::new(gui::WindowMainOpts {
-			title: "DirectShow playback".to_owned(),
+			title: "DirectShow playback",
 			style: gui::WindowMainOpts::default().style
 				| co::WS::MINIMIZEBOX
 				| co::WS::MAXIMIZEBOX
@@ -33,10 +33,11 @@ impl WndMain {
 
 		let new_self = Self { wnd, wnd_video, wnd_tracker, taskbar };
 		new_self.events();
-		new_self
+		new_self.wnd.run_main(None)
 	}
 
-	fn build_menu() -> w::AnyResult<(w::HMENU, w::guard::DestroyAcceleratorTableGuard)> {
+	#[must_use]
+	fn build_menu_acctbl() -> w::AnyResult<(w::HMENU, w::guard::DestroyAcceleratorTableGuard)> {
 		// Create file submenu.
 		let file_submenu = w::HMENU::CreatePopupMenu()?;
 		file_submenu.append_item(&[
@@ -63,9 +64,5 @@ impl WndMain {
 		}])?;
 
 		Ok((main_menu, accel_table))
-	}
-
-	pub fn run(&self) -> w::AnyResult<i32> {
-		self.wnd.run_main(None)
 	}
 }

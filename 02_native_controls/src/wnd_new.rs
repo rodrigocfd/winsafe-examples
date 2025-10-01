@@ -8,7 +8,7 @@ impl MyWindow {
 	pub fn new() -> Self {
 		let wnd = gui::WindowMain::new( // first, we create the container window
 			gui::WindowMainOpts {
-				title:      "The controls".to_owned(),
+				title:      "The controls",
 				class_icon: gui::Icon::Id(101),
 				size:       gui::dpi(660, 290),
 				..Default::default()
@@ -24,7 +24,7 @@ impl MyWindow {
 		// editor (like Visual Studio).
 
 		let btn = gui::Button::new(&wnd, gui::ButtonOpts {
-			text:            "&Click me".to_owned(),
+			text:            "&Click me",
 			position:        gui::dpi(10, 10),
 			resize_behavior: (gui::Horz::Repos, gui::Vert::Resize),
 			..Default::default()
@@ -33,12 +33,12 @@ impl MyWindow {
 		let cmb = gui::ComboBox::new(&wnd, gui::ComboBoxOpts {
 			position: gui::dpi(110, 12),
 			width:    gui::dpi_x(120),
-			items:    vec!["banana".to_owned(), "avocado".to_owned(), "pineapple".to_owned()],
+			items:    &["banana", "avocado", "pineapple"],
 			..Default::default()
 		});
 
 		let chk = gui::CheckBox::new(&wnd, gui::CheckBoxOpts {
-			text:     "C&heck me".to_owned(),
+			text:     "C&heck me",
 			position: gui::dpi(240, 15),
 			..Default::default()
 		});
@@ -57,26 +57,26 @@ impl MyWindow {
 		let hea = gui::Header::new(&wnd, gui::HeaderOpts {
 			position: gui::dpi(210, 50),
 			width:    gui::dpi_x(180),
-			items:    vec![("First".to_owned(), 80), ("Second".to_owned(), 70)],
+			items:    &[("First", 80), ("Second", 70)],
 			..Default::default()
 		});
 
 		let lbl = gui::Label::new(&wnd, gui::LabelOpts {
 			position: gui::dpi(410, 55),
-			text:     "&Label".to_owned(),
+			text:     "&Label",
 			..Default::default()
 		});
 
 		let lst = gui::ListBox::new(&wnd, gui::ListBoxOpts {
 			position:      gui::dpi(10, 90),
-			items:         vec!["First".to_owned(), "Second".to_owned(), "Third".to_owned()],
+			items:         &["First", "Second", "Third"],
 			control_style: gui::ListBoxOpts::default().control_style | co::LBS::MULTIPLESEL,
 			..Default::default()
 		});
 
 		let lsv = gui::ListView::new(&wnd, gui::ListViewOpts {
 			position:      gui::dpi(140, 90),
-			columns:       vec![("First".to_owned(), 50), ("Second".to_owned(), 60)],
+			columns:       &[("First", 50), ("Second", 60)],
 			control_style: co::LVS::REPORT | co::LVS::SHOWSELALWAYS,
 			..Default::default()
 		});
@@ -95,12 +95,12 @@ impl MyWindow {
 
 		let rad = gui::RadioGroup::new(&wnd, &[
 			gui::RadioButtonOpts {
-				text:     "First radio".to_owned(),
+				text:     "First radio",
 				position: gui::dpi(15, 210),
 				..Default::default()
 			},
 			gui::RadioButtonOpts {
-				text:     "Second radio".to_owned(),
+				text:     "Second radio",
 				position: gui::dpi(15, 230),
 				selected: true,
 				..Default::default()

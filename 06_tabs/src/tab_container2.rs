@@ -1,39 +1,37 @@
 #![cfg_attr(any(), rustfmt::skip)]
 
-use winsafe::{prelude::*, gui, co};
+use winsafe::{self as w, gui, co, prelude::*};
 
 /// Contents of second tab.
 #[derive(Clone)]
 pub struct TabContainer2 {
-	wnd: gui::WindowControl,
+	wnd: gui::TabPage,
 	cmb: gui::ComboBox,
 }
 
-impl AsRef<gui::WindowControl> for TabContainer2 { // we must implement AsRef so this window can be used as a tab
-	fn as_ref(&self) -> &gui::WindowControl {
-		&self.wnd
+impl Into<gui::TabPage> for TabContainer2 { // so we can pass TabContainer2 to TabOpts
+	fn into(self) -> gui::TabPage {
+		self.wnd.clone()
 	}
 }
 
 impl TabContainer2 {
+	#[must_use]
 	pub fn new(parent: &(impl GuiParent + 'static)) -> Self {
-		let wnd = gui::WindowControl::new(
+		let wnd = gui::TabPage::new( // create the window for tab page 1
 			parent,
-			gui::WindowControlOpts {
-				ex_style: co::WS_EX::CONTROLPARENT, // so the focus rotation works properly
-				..Default::default()
-			},
+			gui::TabPageOpts::default(),
 		);
 
-		let cmb = gui::ComboBox::new(
+		let cmb = gui::ComboBox::new( // create a combobox
 			&wnd,
 			gui::ComboBoxOpts {
 				position: gui::dpi(10, 10),
-				items: vec![
-					"Avocado".to_owned(),
-					"Banana".to_owned(),
-					"Grape".to_owned(),
-					"Orange".to_owned(),
+				items: &[
+					"Avocado",
+					"Banana",
+					"Grape",
+					"Orange",
 				],
 				selected_item: Some(0),
 				..Default::default()
