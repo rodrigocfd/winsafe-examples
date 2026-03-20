@@ -38,8 +38,9 @@ impl MyWindow {
 		});
 
 		let chk = gui::CheckBox::new(&wnd, gui::CheckBoxOpts {
-			text:     "C&heck me",
-			position: gui::dpi(240, 15),
+			text:        "C&heck me",
+			position:    gui::dpi(240, 15),
+			check_state: co::BST::CHECKED,
 			..Default::default()
 		});
 
